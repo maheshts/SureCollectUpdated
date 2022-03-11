@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "292487368108",
+    "firebase_url": "https://sample-221711.firebaseio.com",
+    "project_id": "sample-221711",
+    "storage_bucket": "sample-221711.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292487368108:android:c49b84f89b09888a38fe09",
+        "android_client_info": {
+          "package_name": "com.blood.fcmdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292487368108-ig1nq3d4h80pjsp8g8cmvbgtdo115o40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2WxLz-MNZAeh4VoFTn6t64V4v0FPjPQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292487368108-ig1nq3d4h80pjsp8g8cmvbgtdo115o40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292487368108:android:6ef8a00d2007d89238fe09",
+        "android_client_info": {
+          "package_name": "com.loan.recovery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292487368108-ig1nq3d4h80pjsp8g8cmvbgtdo115o40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2WxLz-MNZAeh4VoFTn6t64V4v0FPjPQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292487368108-ig1nq3d4h80pjsp8g8cmvbgtdo115o40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

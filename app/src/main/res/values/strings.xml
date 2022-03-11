@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">SureCollect</string>
+    <string name="welcomeBack">Welcome back!</string>
+    <string name="password">Password</string>
+    <string name="enterPassword">Enter Password</string>
+    <string name="strAgreementId">Agreement Id</string>
+    <string name="strApply">Apply</string>
+    <string name="strSubmit">Submit</string>
+    <string name="forgotPassWord">Forgot Password?</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="login">Login</string>
+    <string name="date">Paid Date</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="posAmount">POS Amount >=</string>
+    <string name="dueAmount">Due Amount</string>
+    <string name="userId">User ID</string>
+    <string name="enterUserId">Enter User ID</string>
+    <string name="strSave">Save</string>
+    <string name="strCancel">Cancel</string>
+    <string name="strClear">Clear</string>
+    <string name="strSearch">Search</string>
+
+    <!-- Navigation Bar Titles -->
+
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
+    <string name="startSession">Start Work</string>
+    <string name="dayProgress">Day Progress</string>
+    <string name="directCall">Direct Call</string>
+    <string name="updatePhone">Update Phone Number</string>
+    <string name="call">Call Recordings</string>
+
+    <!-- Font Awesome Icons -->
+
+    <string name="iconNext">&#xf054;</string>
+    <string name="iconPrevious">&#xf053;</string>
+
+    <string name="viewMore">View more</string>
+    <string name="viewLess">View less</string>
+    <string name="selectDate">Select Date</string>
+    <string name="warning_title">Warning</string>
+    <string name="permissions_not_granted">"The application was not granted the necessary permissions for proper functioning. You should grant these permissions on the next run."</string>
+    <string name="audio_file_missing">Cannot find the audio file</string>
+    <string name="error_title">Error</string>
+    <string name="lossless_quality">Lossless quality</string>
+    <string name="hi_quality">High quality</string>
+    <string name="med_quality">Medium quality</string>
+    <string name="bas_quality">Basic quality</string>
+    <string name="progress_title">Progress</string>
+    <string name="progress_text">Moving recordings&#8230;</string>
+    <string name="canceled_move">The move was canceled. Some files might be corrupted or missing.</string>
+    <string name="success_move_title">Success</string>
+    <string name="success_move_text">The recording(s) were successfully moved.</string>
+    <string name="error_move">An error occurred while moving the recording(s). Some files might be corrupted or missing.</string>
+    <string name="playing">Playing </string>
+    <string name="start_speaker">Start speaker</string>
+    <string name="stop_speaker">Stop speaker</string>
+    <string name="recording_speaker_on">Recording&#8230; (speaker on)</string>
+    <string name="settings_name">Settings</string>
+    <string name="settings_storage_names_private">Private (files are visible only to this app)</string>
+    <string name="settings_storage_names_public">Public (files are visible to all apps)</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="enabled_title">Record calls</string>
+    <string name="enabled_sum">Call recording enabled</string>
+    <string name="prefs_storage_title">Recordings storage</string>
+    <string name="prefs_storage_path_title">Where to store recordings</string>
+    <string name="prefs_speaker_title">Speaker use</string>
+    <string name="prefs_speaker_sum">Put device on speaker while recording calls</string>
+    <string name="prefs_format_title">Recording format</string>
+    <string name="prefs_mode_title">Recording mode</string>
+    <string name="prefs_theme_title">Theme</string>
+    <string name="help">Help</string>
+    <string name="strAreYouSure">Are you sure to save this file : ? </string>
+    <string name="strYes">Yes</string>
+    <string name="strNo">No</string>
+    <string name="perms_title">Setup the permissions</string>
+    <string name="perms_intro">%s needs the permissions described below:</string>
+    <string name="perms_phone">The permission to <b>make and manage phone calls</b> is requested because recording phone calls requires that the app knows when the device is making or receiving a phone call.</string>
+    <string name="perms_record">The permission to <b>record audio</b> is requested because the applications records phone calls.</string>
+    <string name="perms_contacts">The permission to <b>access contacts</b> is requested because assigning the recordings to a phone number requires reading the device\'s contacts database.</string>
+    <string name="perms_files">The permission to <b>access photos, media and files</b> is requested because the recordings are written and read from the device\'s storage and also because the app contacts are personalized with photos.</string>
+    <string name="call_setting_message">This setting will make direct effect on your app <b><font color='#FBAE15'>calling functionality</font></b>. By enabling the service <b><font color='red'>calls will be placed from your mobile device operator directly</font></b>. <br></br><br></br>Kindly confirm with your head user before enabling this service. You can also disable it if not required.</string>
+    <string name="call_setting">Call Setting</string>
+    <string name="direct_call">Direct Call</string>
+    <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
+    <string name="no_unassigned">There are no unassigned recordings.</string>
+    <string name="pref_audio_src_title">Audio source for recordings</string>
+    <string name="error_recorder_cannot_start">Cannot start recorder. Maybe change audio source?</string>
+    <string name="error_recorder_failed">Recorder failed.</string>
+    <string name="no_multiple_updates">Payment is already collected for this case. Contact your manager for collecting another payment for this case.!!!</string>
+    <string name="app_version">V2.20</string>
+    <string name="notification_title">Cases updating!</string>
+</resources>

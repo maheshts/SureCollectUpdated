@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SearchableSpinner">
+        <attr name="hintText" format="string"/>
+    </declare-styleable>
+    <attr name="contactSlotStyle" format="reference"/>
+    <attr name="separatorStyle" format="reference" />
+    <attr name="detailHeaderStyle" format="reference"/>
+    <attr name="tabletCurrentSelectionStyle" format="reference"/>
+    <attr name="playerControlStyle" format="reference" />
+    <attr name="drawerStyle" format="reference" />
+    <attr name="helpTabStyle" format="reference"/>
+</resources>

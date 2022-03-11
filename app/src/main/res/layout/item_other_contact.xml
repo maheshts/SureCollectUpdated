@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="0.8">
+        <TextView
+            android:id="@+id/tv_con_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:text="Test Content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="bottom"/>
+        <TextView
+            android:id="@+id/tv_con_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="9988776655"
+            android:textStyle="italic"
+            android:textSize="16sp"
+            android:gravity="bottom"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_con_relation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1.2"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Self"/>
+
+    <ImageView
+        android:id="@+id/btn_call_con"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1.5"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/phone_green"/>
+
+</LinearLayout>

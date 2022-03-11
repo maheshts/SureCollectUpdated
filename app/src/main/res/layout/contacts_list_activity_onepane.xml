@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="2dp"
+        android:theme="@style/toolbar_theme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <ImageButton
+            android:id="@+id/close_select_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:alpha="0"
+            android:background="@android:color/transparent"
+            android:src="@drawable/close"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/hamburger"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/menu" />
+
+        <TextView
+            android:id="@+id/actionbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/textOnDark" />
+
+        <ImageButton
+            android:id="@+id/contact_detail_selected_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/baseline_info_black_36"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/actionbar_select_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:alpha="0"
+            android:background="@android:color/transparent"
+            android:src="@drawable/select_export"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/actionbar_select_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:alpha="0"
+            android:background="@android:color/transparent"
+            android:src="@drawable/select_all"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/actionbar_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:alpha="0"
+            android:background="@android:color/transparent"
+            android:src="@drawable/info"
+            android:visibility="gone" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/contacts_list_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+</RelativeLayout>

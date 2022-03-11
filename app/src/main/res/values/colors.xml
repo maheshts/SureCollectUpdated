@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#FBAE15</color>
+    <color name="colorPrimaryDark">#C6880F</color>
+    <color name="greenDark">#22754D</color>
+    <color name="colorAccent">#0293DE</color>
+    <color name="etLabel">#989DA0</color>
+    <color name="darkGrey">#576169</color>
+    <color name="underline">#E7E7E7</color>
+    <color name="paleYellow">#FEEBB2</color>
+    <color name="colorHeader">#737573</color>
+    <color name="colorHint">#998B8B</color>
+    <color name="colorLink">#21ADBB</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorSolidBlue">#3191F2</color>
+    <color name="parrotGreen">#A0C617</color>
+    <color name="cancelOrange">#D16B26</color>
+    <color name="lightRed">#DB5B56</color>
+    <color name="colorFooterBlue">#4AA6AF</color>
+    <color name="colorBlack">#000000</color>
+
+    <!--old primaryColor #2d6c55-->
+    <color name="primaryColor">#6C8C1C</color>
+    <color name="primaryDarkColor">#597317</color>
+    <!--old colorAccent #cb0600-->
+    <color name="colorAccentLight">#FF3633</color>
+    <color name="colorAccentLighter">#ff775f</color>
+    <color name="md_blue_800">#3b50ce</color>
+    <color name="md_blue_300">#91a7ff</color>
+    <color name="md_grey_400">#bdbdbd</color>
+
+    <color name="backgroundLightTheme">#faf9f6</color>
+    <color name="slotAndDetailHeaderDark">#1e1e1e</color>
+    <color name="detailHeaderBackgroundLight">#f0edec</color>
+
+    <color name="textOnDark">#FFFFFF</color>
+    <color name="white">#FFF</color>
+    <color name="green_dark">#52CC52</color>
+    <color name="green_light">#008000</color>
+    <color name="red">#E62222</color>
+    <color name="textOnLight">#a0000000</color>
+    <color name="slotLight">@color/white</color>
+    <color name="setupButton">#D94441</color>
+    <color name="darkBackground">#FF303030</color>
+</resources>

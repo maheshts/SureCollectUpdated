@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/g1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@mipmap/home"
+            android:title="@string/home" />
+    </group>
+
+    <group
+        android:id="@+id/g2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/startJob"
+            android:icon="@mipmap/start"
+            android:title="@string/startSession" />
+    </group>
+
+    <group
+        android:id="@+id/g4"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/dayProgress"
+            android:icon="@mipmap/ic_charts"
+            android:title="@string/dayProgress" />
+    </group>
+
+    <group
+        android:id="@+id/g5"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/callSetting"
+            android:icon="@drawable/ic_calling_setting"
+            android:title="@string/directCall" />
+    </group>
+
+<!--        <group-->
+<!--            android:id="@+id/g2"-->
+<!--            android:checkableBehavior="single">-->
+<!--            <item-->
+<!--                android:id="@+id/updatePhone"-->
+<!--                android:icon="@mipmap/pencil"-->
+<!--                android:title="@string/updatePhone" />-->
+<!--        </group>-->
+
+<!--    <group-->
+<!--        android:id="@+id/g2"-->
+<!--        android:checkableBehavior="single">-->
+<!--        <item-->
+<!--            android:id="@+id/startJob"-->
+<!--            android:icon="@mipmap/start_white"-->
+<!--            android:title="@string/startSession" />-->
+<!--    </group>-->
+
+    <group
+        android:id="@+id/g3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/logout"
+            android:icon="@mipmap/logout"
+            android:title="@string/logout" />
+    </group>
+
+    <!--    <group android:checkableBehavior="single" android:id="@+id/g3">-->
+    <!--        <item-->
+    <!--            android:id="@+id/callLog"-->
+    <!--            android:icon="@mipmap/phone_green"-->
+    <!--            android:title="@string/call" />-->
+    <!--    </group>-->
+
+</menu>

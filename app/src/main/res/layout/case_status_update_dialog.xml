@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardUseCompatPadding="true">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:padding="1dp"
+        android:paddingVertical="10dp"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="1dp">
+
+            <ImageView
+                android:id="@+id/imgClose"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="3dp"
+                android:src="@mipmap/cancel" />
+
+            <RelativeLayout
+                android:id="@+id/lout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line"
+                android:layout_marginVertical="5dp"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCrLable"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="CR#"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvCrLable"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Tony Stark"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout9"
+                android:layout_marginVertical="5dp"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvNameLabel"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Customer Name"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvNameLabel"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Tony Stark"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout1"
+                android:layout_marginTop="5dp"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPhoneNumberLabel"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Contact Phone"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvPhoneNumberLabel"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="8989898989"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout2"
+                android:layout_marginVertical="5dp"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMinDueLabel"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Min Due"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMinDue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvMinDueLabel"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout10"
+                android:layout_marginVertical="5dp"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPOSLabel"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="POS"
+                    android:textSize="16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tvPOSLabel"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/loutModes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout11"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:id="@+id/loutMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/tvMode"
+                    android:background="@drawable/underline">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgDropDownMode"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/down_arrow_black" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSelectMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toLeftOf="@id/imgDropDownMode"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="10sp"
+                        android:text="Phone"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMode"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Contact Mode"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/loutModes"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:id="@+id/loutStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/tvStatus"
+                    android:background="@drawable/underline">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgDropDownStatus"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/down_arrow_black" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSelectStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toLeftOf="@id/imgDropDownStatus"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="10sp"
+                        android:text="Select Status"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Status"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout3"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/loutCalendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_toRightOf="@id/tvDate"
+                    android:background="@drawable/underline">
+
+                    <EditText
+                        android:id="@+id/etDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toLeftOf="@id/imgCalendar"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:enabled="false"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:paddingVertical="12dp"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgCalendar"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="3dp"
+                        android:src="@mipmap/calendar" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/date"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout4"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_toRightOf="@id/tvAmount"
+                    android:background="@drawable/underline">
+
+                    <EditText
+                        android:id="@+id/etAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Paid Amount"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout5"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_toRightOf="@id/tvTrRefNum"
+                    android:background="@drawable/underline">
+
+                    <EditText
+                        android:id="@+id/etTrRefNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:inputType="text"
+                        android:padding="10dp"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTrRefNum"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Transaction Ref"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout6"
+                android:padding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_toRightOf="@id/tvRemarks"
+                    android:background="@drawable/underline">
+
+                    <EditText
+                        android:id="@+id/etRemarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textColor="@color/colorHeader"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRemarks"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Remarks"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout8"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/loutPaymentMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/tvPaymentMode"
+                    android:background="@drawable/underline">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgDropDownPaymentMode"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingTop="5dp"
+                        android:src="@mipmap/down_arrow_black" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvSelectPaymentMode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toLeftOf="@id/imgDropDownPaymentMode"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:padding="10sp"
+                        android:text="Select Payment Mode"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPaymentMode"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Payment Mode"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/loutButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lout7"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btCancel"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/orange_background_rounded"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:text="@string/strCancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btSave"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_background_rounded"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:text="@string/strSave"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/tvTitle"
+                android:background="@color/colorSolidBlue" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:text="Update Case Status"
+                android:textColor="@color/colorFooterBlue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
