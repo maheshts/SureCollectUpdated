@@ -49,6 +49,10 @@ import com.loan.recovery.retrofit.model.BaseResponse;
 import com.loan.recovery.retrofit.model.Case;
 import com.loan.recovery.retrofit.model.CaseData;
 import com.loan.recovery.retrofit.model.CasesList;
+import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
+import com.loan.recovery.retrofit.model.NonRetraCaseRequest;
+import com.loan.recovery.retrofit.model.NonRetraCasesData;
+import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
 import com.loan.recovery.retrofit.model.Partner;
 import com.loan.recovery.retrofit.model.Roles;
 import com.loan.recovery.retrofit.model.Status;
@@ -187,7 +191,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
                                       String sortByorder, String forexport) {
         activity.showProgressDialog("Please Wait", "Getting Cases List...");
         isFilter = true;
-        JSONObject json = new JSONObject();
+        JsonObject json = new JsonObject();
         UserData userData = application.getCurrentUser();
 
 
@@ -195,35 +199,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         ApiInterface apiService =
                 ApiClient.getClient(activity, 5).create(ApiInterface.class);
 
+
+
         if (userData != null) {
             Roles roles = userData.getRoles();
-            Call<CasesList> call;
-            try {
 
-                json.put("endRows", "10");
-                json.put("firstName", "");
-                json.put("fkPartnerId", 1002);
-                json.put("forExport", forexport);
-                json.put("lastName", "");
-                json.put("loggedInRoleId", "25");
-                json.put("loggedinUserId", "1172");
-                json.put("partnerCaseId", "");
-                json.put("phoneNumber", phoneNumber);
-                json.put("selectedUserId", "");
-                json.put("sortByColumn", sortByColum);
-                json.put("selectedUserId", "1172");
-                json.put("startRows", "0");
-                json.put("statusCode", "");
+//            NonRetraCaseRequest caseRequest = new NonRetraCaseRequest();
+//            caseRequest.setEndRows("10");
+//            caseRequest.setFirstName("");
+//            caseRequest.setFkPartnerId("1002");
+//            caseRequest.setForExport("N");
+//            caseRequest.setLastName("");
+//            caseRequest.setLoggedinUserId("1172");
+//            caseRequest.setLoggedInRoleId("25");
+//            caseRequest.setPartnerCaseId("");
+//            caseRequest.setPhoneNumber("");
+//            caseRequest.setSelectedUserId("1172");
+//            caseRequest.setStartRows("0");
+//            caseRequest.setStatusCode("");
+            json.addProperty("endRows", "10");
+            json.addProperty("firstName", "");
+            json.addProperty("fkPartnerId", "1002");
+            json.addProperty("forExport", forexport);
+            json.addProperty("lastName", "");
+            json.addProperty("loggedInRoleId", "25");
+            json.addProperty("loggedinUserId", "1172");
+            json.addProperty("partnerCaseId", "");
+            json.addProperty("phoneNumber", phoneNumber);
+            json.addProperty("selectedUserId", "");
+            json.addProperty("sortByColumn", sortByColum);
+            json.addProperty("selectedUserId", "1172");
+            json.addProperty("startRows", "0");
+            json.addProperty("statusCode", "");
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             Log.v("1111","json"+json);
-            Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
-            call = apiService.getCaseList("1172", "25",
-                    "0", "10", "1002", "", "",
-                    "","", "","N","", "1172","");
-            call.enqueue(new CasesCallBack());
+           // Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
+//            call = apiService.getCaseList("1172", "25",
+//                    "0", "10", "1002", "", "",
+//                    "","", "","N","", "1172","");
+//            call.enqueue(new CasesCallBack());
+
+            Call<NonRetraBaseResponse> call = apiService.getOtherCaseList(json);
+            //Call<BaseResponse> call
+            call.enqueue(new NonRetraCasesCallBack());
         }
     }
 
@@ -536,6 +554,61 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
 
         @Override
         public void onFailure(Call<CasesList> call, Throwable t) {
+            System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
+            activity.hideProgressDialog();
+            noCases();
+        }
+    }
+    class NonRetraCasesCallBack implements Callback<NonRetraBaseResponse> {
+//        @Override
+//        public void onResponse(Call<JSONObject> call, Response<NonRetraBaseResponse> response) {
+//            activity.hideProgressDialog();
+//            Log.v("1111","json"+ new Gson().toJson(response.body()));
+//
+//            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
+////            CasesList casesList = response.body();
+//
+//            if (casesList != null) {
+//                List<Case> caseData = casesList.getCaseList();
+//                if (caseData != null && caseData.size() > 0) {
+//                    populateCases(caseData);
+//                    binding.recyclerView.setVisibility(View.VISIBLE);
+//                    binding.tvNoCases.setVisibility(View.GONE);
+//                    binding.loutPages.setVisibility(View.VISIBLE);
+//                    casesCount = caseData.get(0).getApplicationCount();
+//                    drawPages();
+//                    binding.tvCount.setText("Total Cases : " + casesCount);
+//                    if (currentPage == 1) {
+//                        binding.tvPrevious.setVisibility(View.GONE);
+//                    } else {
+//                        binding.tvPrevious.setVisibility(View.VISIBLE);
+//                    }
+//
+//                    if (currentPage == lastPage) {
+//                        binding.tvNext.setVisibility(View.GONE);
+//                    } else {
+//                        binding.tvNext.setVisibility(View.VISIBLE);
+//                    }
+//                } else {
+//                    noCases();
+//                }
+//            } else {
+//                noCases();
+//            }
+        //}
+
+
+        @Override
+        public void onResponse(Call<NonRetraBaseResponse> call, Response<NonRetraBaseResponse> response) {
+            activity.hideProgressDialog();
+            Log.v("1111","response"+ new Gson().toJson(response.body()));
+
+            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
+
+        }
+
+        @Override
+        public void onFailure(Call<NonRetraBaseResponse> call, Throwable t) {
             System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
             activity.hideProgressDialog();
             noCases();

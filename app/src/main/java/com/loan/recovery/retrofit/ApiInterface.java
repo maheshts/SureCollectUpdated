@@ -7,6 +7,9 @@ import com.loan.recovery.retrofit.model.BaseResponse;
 import com.loan.recovery.retrofit.model.CasesList;
 import com.loan.recovery.retrofit.model.DayReportList;
 import com.loan.recovery.retrofit.model.FileUploadResponse;
+import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
+import com.loan.recovery.retrofit.model.NonRetraCaseRequest;
+import com.loan.recovery.retrofit.model.NonRetraCasesResponse;
 import com.loan.recovery.retrofit.model.OtherContactResponse;
 import com.loan.recovery.retrofit.model.PartnerCallResponse;
 import com.loan.recovery.retrofit.model.PaymentTypesResponse;
@@ -69,24 +72,27 @@ public interface ApiInterface {
                                  @Field("dueamount") String dueAmount,
                                  @Field("contactStatus") int status,
                                  @Field("contact_mode_type") String contactMode);
-    @FormUrlEncoded
+    //@FormUrlEncoded
     @POST("getLuCaseEduData")
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    Call<CasesList> getCaseList(@Field("loggedinUserId") String userId,
-                                 @Field("loggedInRoleId") String rollId,
-                                 @Field("startRows") String start,
-                                 @Field("endRows") String end,
-                                 @Field("fkPartnerId") String partnerid,
-                                 @Field("phoneNumber") String phonenumber,
-                                 @Field("partnerCaseId") String partnercaseid,
-                                 @Field("firstName") String firstName,
-                                 @Field("lastName") String lastname,
-                                // @Field("agreement_id") String agreementId,
-                                 @Field("statusCode") String statuscode,
-                                 @Field("forExport") String forexport,
-                                 @Field("sortByColumn") String sortByColum,
-                                @Field("selectedUserId") String selecteduserid,
-                                 @Field("sortByOrder") String sortByorder);
+    @Headers({"Content-Type: application/json"})
+    Call<NonRetraBaseResponse> getOtherCaseList(@Body JsonObject requestBody);
+//    Call<CasesList> getCaseList(@Field("loggedinUserId") String userId,
+//                                 @Field("loggedInRoleId") String rollId,
+//                                 @Field("startRows") String start,
+//                                 @Field("endRows") String end,
+//                                 @Field("fkPartnerId") String partnerid,
+//                                 @Field("phoneNumber") String phonenumber,
+//                                 @Field("partnerCaseId") String partnercaseid,
+//                                 @Field("firstName") String firstName,
+//                                 @Field("lastName") String lastname,
+//                                // @Field("agreement_id") String agreementId,
+//                                 @Field("statusCode") String statuscode,
+//                                 @Field("forExport") String forexport,
+//                                 @Field("sortByColumn") String sortByColum,
+//                                @Field("selectedUserId") String selecteduserid,
+//                                 @Field("sortByOrder") String sortByorder);
+
+
 
 
 
