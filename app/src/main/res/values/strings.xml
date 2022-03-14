@@ -14,6 +14,7 @@
     <string name="login">Login</string>
     <string name="date">Paid Date</string>
     <string name="phoneNumber">Phone Number</string>
+    <string name="emailid">Email ID</string>
     <string name="posAmount">POS Amount >=</string>
     <string name="dueAmount">Due Amount</string>
     <string name="userId">User ID</string>

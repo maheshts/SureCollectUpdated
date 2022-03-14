@@ -10,13 +10,7 @@ import java.util.List;
 
 public class NonRetraCasesResponse extends BaseResponse {
 
-    public NonRetraCasesData getCasedata() {
-        return casedata;
-    }
 
-    public void setCasedata(NonRetraCasesData casedata) {
-        this.casedata = casedata;
-    }
 
     public int getStatuscode() {
         return statuscode;
@@ -36,8 +30,19 @@ public class NonRetraCasesResponse extends BaseResponse {
 //        this.message = message;
 //    }
 
+//    @SerializedName("data")
+//    private NonRetraCasesData casedata;
+
+    public List<NonRetraCasesData> getCaseListData() {
+        return caseListData;
+    }
+
+    public void setCaseListData(List<NonRetraCasesData> caseListData) {
+        this.caseListData = caseListData;
+    }
+
     @SerializedName("data")
-    private NonRetraCasesData casedata;
+    private List<NonRetraCasesData> caseListData;
 
     @SerializedName("statusCode")
     private int statuscode;

@@ -38,6 +38,7 @@ import com.loan.recovery.activity.HomeActivity;
 import com.loan.recovery.adapter.CasesRecyclerAdapter;
 import com.loan.recovery.adapter.CommonDataListAdapter;
 import com.loan.recovery.adapter.ContactModeListAdapter;
+import com.loan.recovery.adapter.NonCasesRecyclerAdapter;
 import com.loan.recovery.adapter.PartnerListAdapter;
 import com.loan.recovery.adapter.StatusListAdapter;
 import com.loan.recovery.database.Recording;
@@ -50,9 +51,8 @@ import com.loan.recovery.retrofit.model.Case;
 import com.loan.recovery.retrofit.model.CaseData;
 import com.loan.recovery.retrofit.model.CasesList;
 import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
-import com.loan.recovery.retrofit.model.NonRetraCaseRequest;
 import com.loan.recovery.retrofit.model.NonRetraCasesData;
-import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
+import com.loan.recovery.retrofit.model.NonRetraCasesResponse;
 import com.loan.recovery.retrofit.model.Partner;
 import com.loan.recovery.retrofit.model.Roles;
 import com.loan.recovery.retrofit.model.Status;
@@ -62,6 +62,7 @@ import com.loan.recovery.util.AppConstants;
 import com.loan.recovery.util.UriUtils;
 import com.loan.recovery.util.Utils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -83,25 +84,23 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment implements View.OnClickListener,
         StatusListAdapter.ItemClickListener, PartnerListAdapter.ItemClickListener,
         CommonDataListAdapter.ItemClickListener, ContactModeListAdapter.ItemClickListener {
-    private FragmentHomeBinding binding;
-    private HomeActivity activity;
-    private LoanApplication application;
-    private int currentPage = 1, lastPage = -1, casesCount = -1, modePosition = 0,mPatnerId;
-    private AlertDialog dialog;
-
     private final String[] scoreOptions = {"Select Score", "0", "1",
             "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     private final String[] bucketOptions = {"Select Bucket", "0", "1",
             "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-
     private final String[] modeOptions = {"Phone", "Field Visit"};
-
+    private FragmentHomeBinding binding;
+    private HomeActivity activity;
+    private LoanApplication application;
+    private int currentPage = 1, lastPage = -1, casesCount = -1, modePosition = 0, mPatnerId;
+    private AlertDialog dialog;
     private Partner partnerSelected;
     private Status statusSelected;
     private String scoreSelected, bucketSelected, strAgId, strPhone, strPOSAmount, strDueAmount, strContactMode;
     private AppCompatTextView tvStatus, tvPartner, tvScore, tvContactMode, tvBucket;
     private boolean isFilter = false, isFilterApplied = false;
     private CasesRecyclerAdapter adapter;
+    private NonCasesRecyclerAdapter noncaseadapter;
     private MenuItem menuFilter;
     private List<Status> statusList;
     private StatusListAdapter listAdapter;
@@ -161,7 +160,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         binding.tvPrevious.setOnClickListener(this);
         binding.tvNext.setOnClickListener(this);
         mPatnerId = Utils.getPatnerIDPreferences(getActivity().getApplicationContext());
-        Log.v("mPatnerId","home : "+mPatnerId);
+        Log.v("mPatnerId", "home : " + mPatnerId);
         callAPI(0, 10);
 
     }
@@ -174,74 +173,109 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         UserData userData = application.getCurrentUser();
         if (userData != null) {
             Roles roles = userData.getRoles();
-            if(mPatnerId == 1023) { ///for non retra user
-                Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
-                getNonRetraCasesList(start,end,mPatnerId,userData.getPartnerUuid(),strPhone,"","","","N");
+            if (mPatnerId == 1023) { ///for non retra user
+                //Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
+                getNonRetraCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "", "", "", "N");
 
 
-            }else{
+            } else {
                 Call<CasesList> call = apiService.getCasesList(userData.getUserId(), roles.getRoleId(), "" + start, "" + end, "11");
                 call.enqueue(new CasesCallBack());
             }
         }
     }
 
-    private void getNonRetraCasesList(int start, int end, int partnerid,
-                                      String partnerUuid, String phoneNumber, String status, String sortByColum,
-                                      String sortByorder, String forexport) {
+    private void getNonRetraCasesList(String start, String end, int partnerid,String fname,String lname,
+                                       String phoneNumber, String status, String email,
+                                      String caseid) {
         activity.showProgressDialog("Please Wait", "Getting Cases List...");
         isFilter = true;
         JsonObject json = new JsonObject();
         UserData userData = application.getCurrentUser();
-
-
-
         ApiInterface apiService =
                 ApiClient.getClient(activity, 5).create(ApiInterface.class);
-
-
-
         if (userData != null) {
             Roles roles = userData.getRoles();
 
-//            NonRetraCaseRequest caseRequest = new NonRetraCaseRequest();
-//            caseRequest.setEndRows("10");
-//            caseRequest.setFirstName("");
-//            caseRequest.setFkPartnerId("1002");
-//            caseRequest.setForExport("N");
-//            caseRequest.setLastName("");
-//            caseRequest.setLoggedinUserId("1172");
-//            caseRequest.setLoggedInRoleId("25");
-//            caseRequest.setPartnerCaseId("");
-//            caseRequest.setPhoneNumber("");
-//            caseRequest.setSelectedUserId("1172");
-//            caseRequest.setStartRows("0");
-//            caseRequest.setStatusCode("");
             json.addProperty("endRows", "10");
             json.addProperty("firstName", "");
+            json.addProperty("email", email);
             json.addProperty("fkPartnerId", "1002");
-            json.addProperty("forExport", forexport);
+            json.addProperty("forExport", "N");
             json.addProperty("lastName", "");
             json.addProperty("loggedInRoleId", "25");
             json.addProperty("loggedinUserId", "1172");
             json.addProperty("partnerCaseId", "");
             json.addProperty("phoneNumber", phoneNumber);
             json.addProperty("selectedUserId", "");
-            json.addProperty("sortByColumn", sortByColum);
+            json.addProperty("sortByColumn", "");
             json.addProperty("selectedUserId", "1172");
             json.addProperty("startRows", "0");
             json.addProperty("statusCode", "");
 
-            Log.v("1111","json"+json);
-           // Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
+            Log.v("1111", "json" + json);
+            // Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
 //            call = apiService.getCaseList("1172", "25",
 //                    "0", "10", "1002", "", "",
 //                    "","", "","N","", "1172","");
 //            call.enqueue(new CasesCallBack());
 
-            Call<NonRetraBaseResponse> call = apiService.getOtherCaseList(json);
+            Call<Object> call = apiService.getOtherCaseList(json);
+            Log.v("1111", "jsonstarted");
+
             //Call<BaseResponse> call
-            call.enqueue(new NonRetraCasesCallBack());
+            //Log.v("ccc",call.)
+            //call.enqueue(new NonRetraCasesCallBack());
+            //call.enqueue(new NonRetraCasesCallBack<NonRetraBaseResponse>(){
+            call.enqueue(new Callback() {
+
+                @Override
+                public void onResponse(Call call, Response response) {
+                    Log.e("TAG", "response 33: " + new Gson().toJson(response.body()));
+                    activity.hideProgressDialog();
+                    // NonRetraCasesResponse casesList = (NonRetraCasesResponse) response.body();
+                    try {
+                        JSONObject json1 = new JSONObject(new Gson().toJson(response.body()));
+                        Log.v("1111", "json1" + json1);
+                        binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.tvNoCases.setVisibility(View.GONE);
+                        binding.loutPages.setVisibility(View.VISIBLE);
+                        List<JSONObject> itemList = new ArrayList<>();
+                        JSONArray dataJsonArray = json1.getJSONObject("result").getJSONArray("data");
+                        for (int i = 0; i < dataJsonArray.length(); i++) {
+                            JSONObject json = dataJsonArray.getJSONObject(i);
+                            itemList.add(json);
+                        }
+
+
+                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this);
+                        binding.recyclerView.setAdapter(noncaseadapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //  JsonObject post = new JsonObject().get(response.body().toString()).getAsJsonObject();
+                    // Log.v("1111J","json"+ post);
+
+//        if (casesList != null) {
+//            List<NonRetraCasesData> caseData = casesList.getCaseListData();
+//            if (caseData != null && caseData.size() > 0) {
+//                //populateCases(caseData);
+//                binding.recyclerView.setVisibility(View.VISIBLE);
+//                binding.tvNoCases.setVisibility(View.GONE);
+//                binding.loutPages.setVisibility(View.VISIBLE);
+//            }else{
+//                noCases();
+//            }
+//        }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("TAG", "onFailure: " + t.toString());
+                    // Log error here since request failed
+                }
+            });
+
         }
     }
 
@@ -269,11 +303,96 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+    private void showNonRetraFilterDialog() {
+        statusList = application.getPhoneStatusList();
+        if (modePosition == 1)
+            statusList = application.getFieldStatusList();
+        List<Partner> partnerList = application.getPartners();
+
+        AlertDialog dialog = new AlertDialog.Builder(activity).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.filter_dialog_nonretra, null);
+        RelativeLayout loutStatus = view.findViewById(R.id.loutStatus);
+        RelativeLayout loutPartner = view.findViewById(R.id.loutPartner);
 
 
+        //tvScore = view.findViewById(R.id.tvSelectScore);
+        tvStatus = view.findViewById(R.id.tvSelectStatus);
+        tvPartner = view.findViewById(R.id.tvSelectPartner);
+       // tvContactMode = view.findViewById(R.id.tvSelectMode);
+       // tvBucket = view.findViewById(R.id.tvSelectBucket);
+
+
+        final Button btApply = view.findViewById(R.id.btApply);
+        final Button btClear = view.findViewById(R.id.btClear);
+        final EditText etAgId = view.findViewById(R.id.etAgId);
+        final EditText etPhone = view.findViewById(R.id.etPhone);
+
+        tvStatus.setText(statusSelected.getStatusName());
+        tvPartner.setText(partnerSelected.getPartnerName());
+      //  tvContactMode.setText(strContactMode);
+       // tvBucket.setText(bucketSelected);
+
+
+        etAgId.setText(strAgId);
+        etPhone.setText(strPhone);
+
+
+
+        loutStatus.setOnClickListener(v -> showCustomSpinnerDialog(2, null));
+        loutPartner.setOnClickListener(v -> showCustomSpinnerDialog(3, partnerList));
+
+        view.findViewById(R.id.imgClose).setOnClickListener(v -> dialog.dismiss());
+        btClear.setOnClickListener(v -> {
+            currentPage = 1;
+            clearFilters();
+            isFilterApplied = false;
+            etAgId.setText("");
+            etPhone.setText("");
+            //etPOSAmount.setText("");
+            dialog.dismiss();
+            callAPI(0, 10);
+            menuFilter.setIcon(R.mipmap.filter);
+        });
+
+        btApply.setOnClickListener(v -> {
+            dialog.dismiss();
+            currentPage = 1;
+            isFilterApplied = true;
+            menuFilter.setIcon(R.mipmap.filter_applied);
+            strAgId = etAgId.getText().toString().trim();
+            strPhone = etPhone.getText().toString().trim();
+
+
+            String selectedPartner = "";
+            if (!tvPartner.getText().equals("Select Partner"))
+                selectedPartner = partnerSelected.getPartnerId() + "";
+          //  String selectedScore = "";
+            int selectedStatus = 0000;
+            if (!tvStatus.getText().equals("Select Status"))
+                selectedStatus = statusSelected.getStatusCode();
+
+            // 11 is for Phone
+            // 12 is for field visit
+//            String selectedMode = "";
+//            if (modePosition == 0)
+//                selectedMode = "11";
+//            else
+//                selectedMode = "12";
+
+            if (Utils.isConnected(activity)) {
+               // getCasesList(0, 10, strAgId,selectedScore, selectedBucket, selectedPartner, strPhone, selectedStatus, strPOSAmount, strDueAmount, selectedMode);
+
+            } else
+                Toast.makeText(activity, "No Internet", Toast.LENGTH_SHORT).show();
+        });
+        dialog.setView(view);
+        dialog.show();
+    }
     private void showFilterDialog() {
         statusList = application.getPhoneStatusList();
-        if(modePosition == 1)
+        if (modePosition == 1)
             statusList = application.getFieldStatusList();
         List<Partner> partnerList = application.getPartners();
 
@@ -286,12 +405,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         RelativeLayout loutPartner = view.findViewById(R.id.loutPartner);
         RelativeLayout loutContactMode = view.findViewById(R.id.loutContactMode);
         RelativeLayout loutBucket = view.findViewById(R.id.loutBucket);
+        RelativeLayout posLayout = view.findViewById(R.id.lout6);
+        RelativeLayout dueLayout = view.findViewById(R.id.lout7);
+        RelativeLayout agreementLayout = view.findViewById(R.id.lout4);
+
+
+        if (mPatnerId == 1023) {
+            loutPartner.setVisibility(View.GONE);
+            loutContactMode.setVisibility(View.GONE);
+            posLayout.setVisibility(View.GONE);
+            dueLayout.setVisibility(View.GONE);
+            loutBucket.setVisibility(View.GONE);
+            loutScore.setVisibility(View.GONE);
+            agreementLayout.setVisibility(View.GONE);
+        }
 
         tvScore = view.findViewById(R.id.tvSelectScore);
         tvStatus = view.findViewById(R.id.tvSelectStatus);
         tvPartner = view.findViewById(R.id.tvSelectPartner);
         tvContactMode = view.findViewById(R.id.tvSelectMode);
         tvBucket = view.findViewById(R.id.tvSelectBucket);
+
 
         final Button btApply = view.findViewById(R.id.btApply);
         final Button btClear = view.findViewById(R.id.btClear);
@@ -311,6 +445,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         etPhone.setText(strPhone);
         etPOSAmount.setText(strPOSAmount);
         etDueAmount.setText(strDueAmount);
+
 
         loutScore.setOnClickListener(v -> showCustomSpinnerDialog(1, null));
         loutBucket.setOnClickListener(v -> showCustomSpinnerDialog(5, null));
@@ -357,10 +492,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             // 11 is for Phone
             // 12 is for field visit
             String selectedMode = "";
-                if(modePosition == 0)
-                    selectedMode = "11";
-                else
-                    selectedMode = "12";
+            if (modePosition == 0)
+                selectedMode = "11";
+            else
+                selectedMode = "12";
 
             if (Utils.isConnected(activity)) {
                 getCasesList(0, 10, strAgId,
@@ -381,6 +516,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             CommonDataListAdapter listAdapter = new CommonDataListAdapter(activity, R.layout.project_list_item, scoreOptions, 'S');
             listAdapter.setClickListener(this);
             listView.setAdapter(listAdapter);
+
         } else if (dataType == 2) {
             listAdapter = new StatusListAdapter(activity, R.layout.project_list_item, statusList);
             listAdapter.setClickListener(this);
@@ -389,11 +525,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             final PartnerListAdapter listAdapter = new PartnerListAdapter(activity, R.layout.project_list_item, partnerList);
             listAdapter.setClickListener(this);
             listView.setAdapter(listAdapter);
-        }else if (dataType == 5) {
+        } else if (dataType == 5) {
             CommonDataListAdapter listAdapter = new CommonDataListAdapter(activity, R.layout.project_list_item, bucketOptions, 'B');
             listAdapter.setClickListener(this);
             listView.setAdapter(listAdapter);
-        }else {
+        } else {
             final ContactModeListAdapter listAdapter = new ContactModeListAdapter(activity, R.layout.project_list_item, modeOptions);
             listAdapter.setClickListener(this);
             listView.setAdapter(listAdapter);
@@ -445,7 +581,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
                 // 11 is for Phone
                 // 12 is for field visit
                 String selectedMode = "";
-                if(modePosition == 0)
+                if (modePosition == 0)
                     selectedMode = "11";
                 else
                     selectedMode = "12";
@@ -465,10 +601,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     public void onItemClick(String itemClicked, char layoutType) {
         if (dialog != null && dialog.isShowing())
             dialog.dismiss();
-        if(layoutType == 'S'){
+        if (layoutType == 'S') {
             scoreSelected = itemClicked;
             tvScore.setText(itemClicked);
-        }else {
+        } else {
             bucketSelected = itemClicked;
             tvBucket.setText(itemClicked);
         }
@@ -497,122 +633,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             dialog.dismiss();
         strContactMode = modeSelected;
         tvContactMode.setText(modeSelected);
-        if(position == 1)
+        if (position == 1)
             statusList = application.getFieldStatusList();
         else
             statusList = application.getPhoneStatusList();
 
-        if(listAdapter != null)
+        if (listAdapter != null)
             listAdapter.notifyDataSetChanged();
 
-        if(modePosition != position)
-        {
+        if (modePosition != position) {
             statusSelected = new Status();
             statusSelected.setStatusName("Select Status");
             tvStatus.setText("Select Status");
         }
         modePosition = position;
-    }
-
-    class CasesCallBack implements Callback<CasesList> {
-        @Override
-        public void onResponse(Call<CasesList> call, Response<CasesList> response) {
-            activity.hideProgressDialog();
-            Log.v("1111","json"+ new Gson().toJson(response.body()));
-
-            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
-            CasesList casesList = response.body();
-
-            if (casesList != null) {
-                List<Case> caseData = casesList.getCaseList();
-                if (caseData != null && caseData.size() > 0) {
-                    populateCases(caseData);
-                    binding.recyclerView.setVisibility(View.VISIBLE);
-                    binding.tvNoCases.setVisibility(View.GONE);
-                    binding.loutPages.setVisibility(View.VISIBLE);
-                    casesCount = caseData.get(0).getApplicationCount();
-                    drawPages();
-                    binding.tvCount.setText("Total Cases : " + casesCount);
-                    if (currentPage == 1) {
-                        binding.tvPrevious.setVisibility(View.GONE);
-                    } else {
-                        binding.tvPrevious.setVisibility(View.VISIBLE);
-                    }
-
-                    if (currentPage == lastPage) {
-                        binding.tvNext.setVisibility(View.GONE);
-                    } else {
-                        binding.tvNext.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    noCases();
-                }
-            } else {
-                noCases();
-            }
-        }
-
-        @Override
-        public void onFailure(Call<CasesList> call, Throwable t) {
-            System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
-            activity.hideProgressDialog();
-            noCases();
-        }
-    }
-    class NonRetraCasesCallBack implements Callback<NonRetraBaseResponse> {
-//        @Override
-//        public void onResponse(Call<JSONObject> call, Response<NonRetraBaseResponse> response) {
-//            activity.hideProgressDialog();
-//            Log.v("1111","json"+ new Gson().toJson(response.body()));
-//
-//            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
-////            CasesList casesList = response.body();
-//
-//            if (casesList != null) {
-//                List<Case> caseData = casesList.getCaseList();
-//                if (caseData != null && caseData.size() > 0) {
-//                    populateCases(caseData);
-//                    binding.recyclerView.setVisibility(View.VISIBLE);
-//                    binding.tvNoCases.setVisibility(View.GONE);
-//                    binding.loutPages.setVisibility(View.VISIBLE);
-//                    casesCount = caseData.get(0).getApplicationCount();
-//                    drawPages();
-//                    binding.tvCount.setText("Total Cases : " + casesCount);
-//                    if (currentPage == 1) {
-//                        binding.tvPrevious.setVisibility(View.GONE);
-//                    } else {
-//                        binding.tvPrevious.setVisibility(View.VISIBLE);
-//                    }
-//
-//                    if (currentPage == lastPage) {
-//                        binding.tvNext.setVisibility(View.GONE);
-//                    } else {
-//                        binding.tvNext.setVisibility(View.VISIBLE);
-//                    }
-//                } else {
-//                    noCases();
-//                }
-//            } else {
-//                noCases();
-//            }
-        //}
-
-
-        @Override
-        public void onResponse(Call<NonRetraBaseResponse> call, Response<NonRetraBaseResponse> response) {
-            activity.hideProgressDialog();
-            Log.v("1111","response"+ new Gson().toJson(response.body()));
-
-            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
-
-        }
-
-        @Override
-        public void onFailure(Call<NonRetraBaseResponse> call, Throwable t) {
-            System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
-            activity.hideProgressDialog();
-            noCases();
-        }
     }
 
     private void drawPages() {
@@ -641,6 +675,61 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         textView.setBackground(resources.getDrawable(R.drawable.round_blue));
         textView.setTextColor(resources.getColor(R.color.colorWhite));
     }
+//    class NonRetraCasesCallBack<N extends BaseResponse> implements Callback<NonRetraBaseResponse> {
+////        @Override
+////        public void onResponse(Call<JSONObject> call, Response<NonRetraBaseResponse> response) {
+////            activity.hideProgressDialog();
+////            Log.v("1111","json"+ new Gson().toJson(response.body()));
+////
+////            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
+//////            CasesList casesList = response.body();
+////
+////            if (casesList != null) {
+////                List<Case> caseData = casesList.getCaseList();
+////                if (caseData != null && caseData.size() > 0) {
+////                    populateCases(caseData);
+////                    binding.recyclerView.setVisibility(View.VISIBLE);
+////                    binding.tvNoCases.setVisibility(View.GONE);
+////                    binding.loutPages.setVisibility(View.VISIBLE);
+////                    casesCount = caseData.get(0).getApplicationCount();
+////                    drawPages();
+////                    binding.tvCount.setText("Total Cases : " + casesCount);
+////                    if (currentPage == 1) {
+////                        binding.tvPrevious.setVisibility(View.GONE);
+////                    } else {
+////                        binding.tvPrevious.setVisibility(View.VISIBLE);
+////                    }
+////
+////                    if (currentPage == lastPage) {
+////                        binding.tvNext.setVisibility(View.GONE);
+////                    } else {
+////                        binding.tvNext.setVisibility(View.VISIBLE);
+////                    }
+////                } else {
+////                    noCases();
+////                }
+////            } else {
+////                noCases();
+////            }
+//        //}
+//
+//
+//        @Override
+//        public void onResponse(Call<NonRetraBaseResponse> call, Response<NonRetraBaseResponse> response) {
+//            activity.hideProgressDialog();
+//            Log.v("1111","response"+ new Gson().toJson(response.body()));
+//
+//            System.out.println("<=== NONCasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
+//
+//        }
+//
+//        @Override
+//        public void onFailure(Call<NonRetraBaseResponse> call, Throwable t) {
+//            System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
+//            activity.hideProgressDialog();
+//            noCases();
+//        }
+//    }
 
     private void noCases() {
         binding.recyclerView.setVisibility(View.GONE);
@@ -665,7 +754,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
 //        result.get(0).setPhoneNumber("9492414612");
             adapter = new CasesRecyclerAdapter(result, activity, this);
             binding.recyclerView.setAdapter(adapter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -690,7 +779,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.filter:
-                showFilterDialog();
+                if (mPatnerId == 1023) {
+                    showNonRetraFilterDialog();
+                }else{
+                    showFilterDialog();
+                }
                 if (menuFilter == null)
                     menuFilter = item;
                 return true;
@@ -707,23 +800,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     public void onResume() {
         System.out.println("<=== Home Fragment - In onResume method ===> ");
         super.onResume();
-            try {
-                RepositoryImpl repository = new RepositoryImpl(getActivity(), AppConstants.DATABASE_NAME);
-                List<Recording> recordings = repository.getRecordings();
-                for (Recording recording : recordings) {
-                    String[] data = recording.getMode().split("&&&");
-                    String fileName = new File(recording.getPath()).getName();
-                    System.out.println("recording.getRecording :: "+recording.getRecording());
-                    System.out.println("recording.getMetadata :: "+recording.getMetadata());
-                    if (recording.getRecording() == 0)
-                        uploadFile(recording, data[4]);
-                    if (recording.getMetadata() == 0)
-                        updateMetadata(recording.getId(), data, recording.getStartTimestamp() + "", recording.getEndTimestamp() + "", data[4] + "/" + fileName);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("<=== Home Fragment - onResume Exception ===> " + e.toString());
+        try {
+            RepositoryImpl repository = new RepositoryImpl(getActivity(), AppConstants.DATABASE_NAME);
+            List<Recording> recordings = repository.getRecordings();
+            for (Recording recording : recordings) {
+                String[] data = recording.getMode().split("&&&");
+                String fileName = new File(recording.getPath()).getName();
+                System.out.println("recording.getRecording :: " + recording.getRecording());
+                System.out.println("recording.getMetadata :: " + recording.getMetadata());
+                if (recording.getRecording() == 0)
+                    uploadFile(recording, data[4]);
+                if (recording.getMetadata() == 0)
+                    updateMetadata(recording.getId(), data, recording.getStartTimestamp() + "", recording.getEndTimestamp() + "", data[4] + "/" + fileName);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("<=== Home Fragment - onResume Exception ===> " + e.toString());
+        }
     }
 
     private void uploadFile(Recording recording, String userId) {
@@ -804,6 +897,52 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
                     System.out.println("<=== Exceptions ===> " + t.toString());
                 }
             });
+        }
+    }
+
+    class CasesCallBack implements Callback<CasesList> {
+        @Override
+        public void onResponse(Call<CasesList> call, Response<CasesList> response) {
+            activity.hideProgressDialog();
+            Log.v("1111", "json" + new Gson().toJson(response.body()));
+
+            System.out.println("<=== CasesCallBack -LIST Response : ===> " + new Gson().toJson(response.body()));
+            CasesList casesList = response.body();
+
+            if (casesList != null) {
+                List<Case> caseData = casesList.getCaseList();
+                if (caseData != null && caseData.size() > 0) {
+                    populateCases(caseData);
+                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    binding.tvNoCases.setVisibility(View.GONE);
+                    binding.loutPages.setVisibility(View.VISIBLE);
+                    casesCount = caseData.get(0).getApplicationCount();
+                    drawPages();
+                    binding.tvCount.setText("Total Cases : " + casesCount);
+                    if (currentPage == 1) {
+                        binding.tvPrevious.setVisibility(View.GONE);
+                    } else {
+                        binding.tvPrevious.setVisibility(View.VISIBLE);
+                    }
+
+                    if (currentPage == lastPage) {
+                        binding.tvNext.setVisibility(View.GONE);
+                    } else {
+                        binding.tvNext.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    noCases();
+                }
+            } else {
+                noCases();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<CasesList> call, Throwable t) {
+            System.out.println("<=== CasesCallBack - Response : ===> " + t.getMessage());
+            activity.hideProgressDialog();
+            noCases();
         }
     }
 }

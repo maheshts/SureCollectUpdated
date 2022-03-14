@@ -53,8 +53,8 @@
                 android:id="@+id/imgSave"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:layout_toLeftOf="@id/imgEdit"
                 android:src="@mipmap/diskette" />
 
@@ -105,13 +105,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="15dp">
-
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="150dp"
+                            android:layout_width="130dip"
                             android:layout_height="wrap_content"
-                            android:text="Customer Name"
+                            android:text="Case Id"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvAgreementId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tony Stark"
+                            android:textAllCaps="false"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                    <TableRow android:padding="5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="130dip"
+                            android:layout_height="wrap_content"
+                            android:text="Assigned To"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -124,30 +140,14 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:text="Agreement Id"
-                            android:textSize="18sp" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvAgreementId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tony Stark"
-                            android:textAllCaps="false"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </TableRow>
 
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="150dp"
+                            android:layout_width="130dip"
                             android:layout_height="wrap_content"
-                            android:text="Score"
+                            android:text="First Name"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -163,7 +163,7 @@
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="150dp"
+                            android:layout_width="130dip"
                             android:layout_height="wrap_content"
                             android:text="Phone Number"
                             android:textSize="18sp" />
@@ -182,7 +182,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Min Amount"
+                            android:text="Last Name"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -199,7 +199,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Due"
+                            android:text="Email Id"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -211,12 +211,12 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
+                    <TableRow android:padding="5dp" android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="EMI Amount"
+                            android:text="Assigned To"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -231,9 +231,9 @@
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="150dp"
+                            android:layout_width="130dip"
                             android:layout_height="wrap_content"
-                            android:text="Latest Status"
+                            android:text="Status"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -245,12 +245,15 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
+                    <TableRow android:padding="5dp"
+                        android:visibility="gone"
+                        >
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:text="City"
+
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -262,7 +265,7 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
+                    <TableRow android:padding="5dp"                             android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="120dp"
@@ -279,7 +282,7 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
+                    <TableRow android:padding="5dp" android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="120dp"
@@ -296,7 +299,7 @@
                             android:textStyle="bold" />
                     </TableRow>
 
-                    <TableRow android:padding="5dp">
+                    <TableRow android:padding="5dp" android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="120dp"

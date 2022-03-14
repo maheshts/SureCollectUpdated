@@ -75,7 +75,7 @@ public interface ApiInterface {
     //@FormUrlEncoded
     @POST("getLuCaseEduData")
     @Headers({"Content-Type: application/json"})
-    Call<NonRetraBaseResponse> getOtherCaseList(@Body JsonObject requestBody);
+    Call<Object> getOtherCaseList(@Body JsonObject requestBody);
 //    Call<CasesList> getCaseList(@Field("loggedinUserId") String userId,
 //                                 @Field("loggedInRoleId") String rollId,
 //                                 @Field("startRows") String start,
