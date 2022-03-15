@@ -198,11 +198,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             Roles roles = userData.getRoles();
 
             json.addProperty("endRows", "10");
-            json.addProperty("firstName", "");
+            json.addProperty("firstName", fname);
             json.addProperty("email", email);
             json.addProperty("fkPartnerId", "1002");
             json.addProperty("forExport", "N");
-            json.addProperty("lastName", "");
+            json.addProperty("lastName", lname);
             json.addProperty("loggedInRoleId", "25");
             json.addProperty("loggedinUserId", "1172");
             json.addProperty("partnerCaseId", "");
@@ -211,7 +211,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             json.addProperty("sortByColumn", "");
             json.addProperty("selectedUserId", "1172");
             json.addProperty("startRows", "0");
-            json.addProperty("statusCode", "");
+            json.addProperty("statusCode", status);
 
             Log.v("1111", "json" + json);
             // Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
@@ -328,6 +328,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         final Button btClear = view.findViewById(R.id.btClear);
         final EditText etAgId = view.findViewById(R.id.etAgId);
         final EditText etPhone = view.findViewById(R.id.etPhone);
+        final EditText etFname = view.findViewById(R.id.etFname);
+        final EditText etLname = view.findViewById(R.id.etLname);
+        final EditText etemail = view.findViewById(R.id.etEmail);
 
         tvStatus.setText(statusSelected.getStatusName());
         tvPartner.setText(partnerSelected.getPartnerName());
@@ -350,6 +353,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             isFilterApplied = false;
             etAgId.setText("");
             etPhone.setText("");
+            etFname.setText("");
+            etLname.setText("");
+            etemail.setText("");
             //etPOSAmount.setText("");
             dialog.dismiss();
             callAPI(0, 10);
@@ -363,6 +369,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             menuFilter.setIcon(R.mipmap.filter_applied);
             strAgId = etAgId.getText().toString().trim();
             strPhone = etPhone.getText().toString().trim();
+           String email = etemail.getText().toString().trim();
+           String fname = etFname.getText().toString().trim();
+           String lname = etLname.getText().toString().trim();
+           String phone = etPhone.getText().toString().trim();
 
 
             String selectedPartner = "";
@@ -383,7 +393,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
 
             if (Utils.isConnected(activity)) {
                // getCasesList(0, 10, strAgId,selectedScore, selectedBucket, selectedPartner, strPhone, selectedStatus, strPOSAmount, strDueAmount, selectedMode);
-
+                getNonRetraCasesList("","",mPatnerId,fname,lname,phone,selectedStatus+"",email,"");
             } else
                 Toast.makeText(activity, "No Internet", Toast.LENGTH_SHORT).show();
         });
@@ -410,15 +420,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         RelativeLayout agreementLayout = view.findViewById(R.id.lout4);
 
 
-        if (mPatnerId == 1023) {
-            loutPartner.setVisibility(View.GONE);
-            loutContactMode.setVisibility(View.GONE);
-            posLayout.setVisibility(View.GONE);
-            dueLayout.setVisibility(View.GONE);
-            loutBucket.setVisibility(View.GONE);
-            loutScore.setVisibility(View.GONE);
-            agreementLayout.setVisibility(View.GONE);
-        }
+
 
         tvScore = view.findViewById(R.id.tvSelectScore);
         tvStatus = view.findViewById(R.id.tvSelectStatus);
