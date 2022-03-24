@@ -896,12 +896,12 @@ public class CasesRecyclerAdapter extends RecyclerView.Adapter<CasesRecyclerAdap
         if (status == 1050 || status == 4020) {
             object = ApiUtil.getPTPStatusObject(caseData.getCaseUuid(),
                     status, remarks, caseData.getPhoneNumber(), transKey,
-                    isPaymentDone, amount, transRef, paymentType,
+                    isPaymentDone,  transRef, paymentType,
                     nextActionDate, nextActionDate, isFollowupReq);
         } else {
             object = ApiUtil.getStatusObject(caseData.getCaseUuid(),
                     status, remarks, caseData.getPhoneNumber(), transKey,
-                    isPaymentDone, amount, transRef, paymentType,
+                    isPaymentDone,  transRef, paymentType,
                     nextActionDate, nextActionDate, isFollowupReq);
         }
         Call<BaseResponse> call = apiService.updateCaseStatus(object);

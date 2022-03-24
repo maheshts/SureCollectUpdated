@@ -127,6 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lout2"
+                android:visibility="gone"
                 android:layout_marginVertical="5dp"
                 android:padding="5dp">
 
@@ -159,6 +160,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lout10"
                 android:layout_marginVertical="5dp"
+                android:visibility="gone"
+
                 android:padding="5dp">
 
                 <androidx.appcompat.widget.AppCompatTextView

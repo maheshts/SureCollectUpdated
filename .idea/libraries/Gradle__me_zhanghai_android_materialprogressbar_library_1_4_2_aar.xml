@@ -4,6 +4,7 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e4add4c4a54e6bf81447f5cb466bebaf/jetified-library-1.4.2/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d36b3506719de2be615624315c0ee0ad/jetified-library-1.4.2/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f504fc97d01b4a544a114709835d7e7b/jetified-library-1.4.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d6cab4ca121e0c3ea97fff0ac04a0e18/jetified-library-1.4.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e4add4c4a54e6bf81447f5cb466bebaf/jetified-library-1.4.2/jars/classes.jar!/" />
@@ -15,6 +16,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f504fc97d01b4a544a114709835d7e7b/jetified-library-1.4.2/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f504fc97d01b4a544a114709835d7e7b/jetified-library-1.4.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f504fc97d01b4a544a114709835d7e7b/jetified-library-1.4.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d6cab4ca121e0c3ea97fff0ac04a0e18/jetified-library-1.4.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d6cab4ca121e0c3ea97fff0ac04a0e18/jetified-library-1.4.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d6cab4ca121e0c3ea97fff0ac04a0e18/jetified-library-1.4.2/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.zhanghai.android.materialprogressbar/library/1.4.2/8176c096217fe07a56cfcec8c9e3b7869b5e8276/library-1.4.2-javadoc.jar!/" />

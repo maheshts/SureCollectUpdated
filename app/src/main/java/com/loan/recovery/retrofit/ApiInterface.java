@@ -73,6 +73,11 @@ public interface ApiInterface {
                                  @Field("contactStatus") int status,
                                  @Field("contact_mode_type") String contactMode);
     //@FormUrlEncoded
+    @POST("getLuCaseRealtyData")
+    @Headers({"Content-Type: application/json"})
+    Call<Object> getRealEstateCaseList(@Body JsonObject requestBody);
+
+
     @POST("getLuCaseEduData")
     @Headers({"Content-Type: application/json"})
     Call<Object> getOtherCaseList(@Body JsonObject requestBody);
@@ -127,6 +132,13 @@ public interface ApiInterface {
     @POST("getContactModeDispositions")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     Call<StatusCallResponse> getModeStatusList(@Field("contact_mode_type_id") int modeId);
+
+    //partner_id: 1024
+    //                contact_mode_type_id:15
+    @FormUrlEncoded
+    @POST("getCaseStatus")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Call<StatusCallResponse> getRealStateStatusList(@Field("partner_id") int pId,@Field("contact_mode_type_id") int cmodeId);
 
     @FormUrlEncoded
     @POST("getOtherContactDetails")

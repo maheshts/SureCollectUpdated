@@ -34,7 +34,7 @@ public class ApiUtil {
 
     public static JsonObject getStatusObject(String caseUuid, int statusCode, String remarks,
                                              String phone, String userTransKey,
-                                             String isPaymentDone, double amount, String transRef, int paymentType,
+                                             String isPaymentDone,  String transRef, int paymentType,
                                              String nextActionDate, String nextFollowUpDate, String followUpReq) {
         JsonObject object = new JsonObject();
         object.addProperty("case_uuid", caseUuid);
@@ -47,7 +47,7 @@ public class ApiUtil {
         object.addProperty("isPTP", "N");
 
         JsonObject payment = new JsonObject();
-        payment.addProperty("paymentAmount", amount + "");
+        payment.addProperty("paymentAmount", "");
         payment.addProperty("transRef", transRef);
         payment.addProperty("paymentType", paymentType);
         payment.addProperty("paymentFilePath", "image.png");
@@ -60,7 +60,7 @@ public class ApiUtil {
 
     public static JsonObject getPTPStatusObject(String caseUuid, int statusCode, String remarks,
                                                 String phone, String userTransKey,
-                                                String isPaymentDone, double amount, String transRef, int paymentType,
+                                                String isPaymentDone,  String transRef, int paymentType,
                                                 String nextActionDate, String nextFollowUpDate, String followUpReq) {
         JsonObject object = new JsonObject();
         object.addProperty("case_uuid", caseUuid);
@@ -73,7 +73,7 @@ public class ApiUtil {
         object.addProperty("isPTP", "Y");
 
         JsonObject payment = new JsonObject();
-        payment.addProperty("ptpAmount", amount);
+        payment.addProperty("ptpAmount", "");
         payment.addProperty("ptpDate", nextActionDate);
         object.add("ptpDetails", payment);
         object.addProperty("nextActionDate", nextActionDate);

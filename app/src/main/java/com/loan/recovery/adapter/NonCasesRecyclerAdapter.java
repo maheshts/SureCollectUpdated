@@ -55,6 +55,7 @@ import com.loan.recovery.retrofit.util.ApiUtil;
 import com.loan.recovery.util.AppConstants;
 import com.loan.recovery.util.Utils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -67,7 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecyclerAdapter.CaseViewHolder>
+public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecyclerAdapter.NonCaseViewHolder>
         implements DatePickerFragment.UseDateListener, StatusListAdapter.ItemClickListener,
         PaymentTypeListAdapter.ItemClickListener, ContactModeListAdapter.ItemClickListener {
 
@@ -107,31 +108,35 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 
     @NonNull
     @Override
-    public CaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NonCaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.non_case_item_layout, parent, false);
-        return new CaseViewHolder(v);
+        return new NonCaseViewHolder(v);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final CaseViewHolder holder, final int position) {
+    public void onBindViewHolder(final NonCaseViewHolder holder, final int position) {
         try {
             JSONObject json = caseDataList.get(position);
             String casedata =json.getString("caseList");
             JSONObject casejson = new JSONObject(casedata);
-
-            String strPhone = casejson.getString("phone_number");
-            String aiqNumber = application.getPhoneNumbersList().get(0).getUserPhone();
-            holder.tvName.setText(": " + casejson.getString("assigned_to"));
-            holder.textViewName.setText(casejson.getString("user_name"));
-            holder.tvDueAmount.setText(": "+casejson.getString("last_name"));
-            holder.tvPrinciple.setText(": "+casejson.getString("email_address"));
-            holder.tvPhoneNumber.setText(": " + strPhone);
-            holder.tvAgreementId.setText(":" +"#"+ casejson.getString("lu_case_edu_id"));
-           holder.tvScore.setText(": " + casejson.getString("first_name"));
+            if (holder instanceof NonCaseViewHolder) {
+                NonCaseViewHolder genericViewHolder = (NonCaseViewHolder) holder;
+                genericViewHolder.jsonObject = casejson;
+                String strPhone = casejson.getString("phone_number");
+                String aiqNumber = application.getPhoneNumbersList().get(0).getUserPhone();
+                holder.tvName.setText(": " + casejson.getString("assigned_to"));
+                holder.textViewName.setText(casejson.getString("user_name"));
+                holder.tvDueAmount.setText(": " + casejson.getString("last_name"));
+                holder.tvPrinciple.setText(": " + casejson.getString("email_address"));
+                holder.tvPhoneNumber.setText(": " + strPhone);
+                if (casejson.has("lu_case_realty_id")) {
+                    holder.tvAgreementId.setText(":" + "#" + casejson.getString("lu_case_realty_id"));
+                }
+                holder.tvScore.setText(": " + casejson.getString("first_name"));
 //            holder.tvCity.setText(": " + ((caseData.getOffCityName() != null) ? caseData.getOffCityName() : "NA"));
-           holder.tvStatus.setText(": " +casejson.getString("status_code"));
+                holder.tvStatus.setText(": " + casejson.getString("status_code"));
 //            holder.tvRemarks.setText(": " + caseData.getRemarks());
 //            holder.tvBucket.setText(": " + caseData.getPartnerBucketNumber());
 //            holder.tvContactMode.setText(": " + getModeString(caseData.getContactMode()));
@@ -214,24 +219,43 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 //                holder.linearLayout.startAnimation(slideDown);
 //            }
 //
-            holder.textViewName.setOnClickListener(v -> {
-                //getting the position of the item to expand it
-                currentPosition = position;
-
-                //reloading the list
-                notifyDataSetChanged();
-            });
-            if (strPhone == null || strPhone.isEmpty())
-                holder.imgCall.setVisibility(View.INVISIBLE);
-            else
-                holder.imgCall.setVisibility(View.VISIBLE);
-            String finalStrPhone = strPhone;
-            holder.imgCall.setOnClickListener(v -> {
-                try {
+                holder.textViewName.setOnClickListener(v -> {
+                    //getting the position of the item to expand it
                     currentPosition = position;
-                    boolean isCallActive = Utils.isCallActive(context);
 
-                    if (finalStrPhone.length() > 9 && !isCallActive) {
+                    //reloading the list
+                    notifyDataSetChanged();
+                });
+                if (strPhone == null || strPhone.isEmpty())
+                    holder.imgCall.setVisibility(View.INVISIBLE);
+                else
+                    holder.imgCall.setVisibility(View.VISIBLE);
+                String finalStrPhone = strPhone;
+                holder.imgCall.setOnClickListener(v -> {
+                    try {
+                        currentPosition = position;
+                        boolean isCallActive = Utils.isCallActive(context);
+
+                        if (finalStrPhone.length() > 9 && !isCallActive) {
+                            if (!Utils.isOSOreo())
+                                if (true) {
+                                    createCallSession(genericViewHolder.jsonObject, aiqNumber);
+                                   // saveUpdatedDate(caseData.getRetraCaseId());
+                                   // currentCase = caseData;
+                                    application.setCaseId(currentCase.getCaseUuid());
+                                    String strTransKey = Utils.getTransKey(application.getCurrentUser());
+                                    String builder = currentCase.getRetraCaseId() +
+                                            "&&&" +
+                                            getPartnerId(currentCase.getPartnerName()) +
+                                            "&&&" +
+                                            currentCase.getPhoneNumber() +
+                                            "&&&" +
+                                            strTransKey +
+                                            "&&&" +
+                                            application.getCurrentUser().getUserId();
+                                    application.setMetaData(builder);
+                                    application.setMetaData("");
+                                }
 //                    if (!Utils.isOSOreo())
 //                    if(true) {
 //                        createCallSession(caseData, aiqNumber);
@@ -251,99 +275,20 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 //                        application.setMetaData(builder);
 //                    application.setMetaData("");
 //                    }
-                    }else if(isCallActive){
-                        Toast.makeText(context, "Already call running", Toast.LENGTH_SHORT).show();
+                        } else if (isCallActive) {
+                            Toast.makeText(context, "Already call running", Toast.LENGTH_SHORT).show();
+                        } else {
+                            showCannotUpdateStatusDialog("Customer phone number is not valid : " + finalStrPhone);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("<=== Exceptions 1 ===> " + e.toString());
+                        application.setCaseId(null);
                     }
-                    else {
-                        showCannotUpdateStatusDialog("Customer phone number is not valid : " + finalStrPhone);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("<=== Exceptions 1 ===> " + e.toString());
-                    application.setCaseId(null);
-                }
-            });
+                });
+            }
 
-            holder.imgOtherContact.setOnClickListener(v -> {
-                Toast.makeText(context, "Showing Other Contact", Toast.LENGTH_SHORT).show();
 
-                currentPosition = position;
-                ApiInterface apiService =
-                        ApiClient.getClient(context, 1).create(ApiInterface.class);
-//                Call<OtherContactResponse> call = apiService.getOtherContacts(Integer.parseInt(caseData.getRetraCaseId()));
-//                call.enqueue(new Callback<OtherContactResponse>() {
-//                    @Override
-//                    public void onResponse(Call<OtherContactResponse> call, Response<OtherContactResponse> response) {
-//                        try {
-//                            OtherContactResponse serverResponse = response.body();
-//                            if (serverResponse != null) {
-//
-//                                otherConDialog = new AlertDialog.Builder(context).create();
-//                                otherConDialog.setCanceledOnTouchOutside(false);
-//                                otherConDialog.setCancelable(false);
-//
-//                                otherConView = LayoutInflater.from(context).inflate(R.layout.list_other_contacts, null);
-//
-//                                ListView lv = (ListView) otherConView.findViewById(R.id.list_other_contacts);
-//                                List<OtherContact> contactList = serverResponse.getOtherContactList();
-//                                Button btnCloseDialog = (Button) otherConView.findViewById(R.id.btnClose);
-//                                OtherContactListAdaptor customContactAdaptor = new OtherContactListAdaptor(context, R.layout.item_other_contact, contactList);
-//                                lv.setAdapter(customContactAdaptor);
-//                                btnCloseDialog.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        otherConDialog.dismiss();
-//                                    }
-//                                });
-//                                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                    @Override
-//                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                        OtherContact selectedContact = contactList.get(position);
-//                                        System.out.println(selectedContact);
-//                                        otherConDialog.dismiss();
-//
-//                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                                        builder.setMessage("Initiate call on : " + selectedContact.getPhoneNumber())
-//                                                .setCancelable(false)
-//                                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                                                    public void onClick(DialogInterface dialog, int id) {
-//                                                        String finalAltNum1 = selectedContact.getPhoneNumber();
-////                                                        if (finalAltNum1.length() > 9) {
-////                                                            createCallSessionOtherContacts(caseData, finalAltNum1, aiqNumber);
-////                                                            saveUpdatedDate(caseData.getRetraCaseId());
-////                                                            currentCase = caseData;
-////                                                            application.setCaseId(currentCase.getCaseUuid());
-////                                                        }
-//                                                    }
-//                                                })
-//                                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                                                    public void onClick(DialogInterface dialog, int id) {
-//                                                        dialog.cancel();
-//                                                    }
-//                                                });
-//                                        AlertDialog alert = builder.create();
-//                                        alert.show();
-//                                    }
-//                                });
-////                                otherConDialog.setContentView(otherConView);
-//                                otherConDialog.setView(otherConView);
-//                                otherConDialog.show();
-//                            } else {
-//                                System.out.println("<=== No other contact ===> ");
-//                            }
-//                        } catch (Exception e) {
-//                            System.out.println("<=== other contact - Crash : ===> " + e.toString());
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<OtherContactResponse> call, Throwable t) {
-//                        System.out.println("<=== Exceptions ===> " + t.toString());
-//                    }
-//                });
-
-            });
 
 //            holder.imgEdit.setOnClickListener(v -> {
 //                currentPosition = position;
@@ -404,7 +349,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         dialog2.show();
     }
 
-    private void showStatusUpdateDialog(CaseData data, char isUpdateMendetory) {
+    private void showStatusUpdateDialog(JSONObject data, char isUpdateMendetory) {
         paymentTypes = application.getPaymentTypes();
 
         dialog = new AlertDialog.Builder(context).create();
@@ -437,11 +382,16 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         EditText etRemarks = view.findViewById(R.id.etRemarks);
         EditText etAmount = view.findViewById(R.id.etAmount);
         EditText etTransRef = view.findViewById(R.id.etTrRefNum);
-        tvPhone.setText(" : " + data.getPhoneNumber());
-        tvName.setText(" : " + data.getCustomerName());
-        tvCr.setText(" : " + data.getPartnerCaseId());
-        tvMinDue.setText(" : " + data.getDueAmount());
-        tvPOS.setText(" : " + data.getOdPrincipal());
+        try {
+            tvPhone.setText(" : " + data.getString("phone_number"));
+            tvName.setText(" : " + data.getString("first_name")+""+data.getString("last_name"));
+           // tvCr.setText(" : " + data.getPartnerCaseId());
+           // tvMinDue.setText(" : " + data.getDueAmount());
+            //tvPOS.setText(" : " + data.getOdPrincipal());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         btCancel.setOnClickListener(v -> dialog.dismiss());
 
         if (isUpdateMendetory == 'Y') {
@@ -452,8 +402,14 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         view.findViewById(R.id.loutCalendar).setOnClickListener(v -> {
             boolean isMaxDate = false;
             int maxDays = 0;
-            int partnerCode = getPartnerId(data.getPartnerName());
-            if (statusSelected.getStatusCode() == 1050 || statusSelected.getStatusCode() == 4020) {
+            int partnerCode = 0;
+            try {
+                partnerCode = getPartnerId(data.getString("partner_name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //if (statusSelected.getStatusCode() == 1050 || statusSelected.getStatusCode() == 4020) {
+            if (statusSelected.getStatusCode() == 8000 || statusSelected.getStatusCode() == 8100) {
                 isMaxDate = true;
                 maxDays = Utils.getMaxDays(partnerCode);
             }
@@ -487,79 +443,40 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                     Utils.hideSoftKeyboard(context, etAmount);
                     int strPaymentType = paymentTypeSelected.getPaymentTypeId();
                     String strDate = etDate.getText().toString().trim();
-                    String strAmount = etAmount.getText().toString().trim();
+                   // String strAmount = etAmount.getText().toString().trim();
                     String strRemarks = etRemarks.getText().toString().trim();
                     String strTransRef = etTransRef.getText().toString().trim();
                     String strTransKey = Utils.getTransKey(application.getCurrentUser());
                     int statusCode = statusSelected.getStatusCode();
-                    double amount = (strAmount.equals("")) ? 0 : Double.parseDouble(strAmount);
+                  //  double amount = (strAmount.equals("")) ? 0 : Double.parseDouble(strAmount);
                     if (statusCode == 0000)
                         Toast.makeText(context, "Select Status", Toast.LENGTH_SHORT).show();
                     else if (TextUtils.isEmpty(strRemarks))
                         Toast.makeText(context, "Enter Remarks", Toast.LENGTH_SHORT).show();
-                    else if (statusCode == 1050 || statusCode == 4020 || statusCode == 1390
-                            || statusCode == 1290 || statusCode == 4040 || statusCode == 4050) {
+                    else if (statusCode == 8000 || statusCode == 8100 ) {
                         if (TextUtils.isEmpty(strDate))
                             Toast.makeText(context, "Select Date", Toast.LENGTH_SHORT).show();
-                        else if (TextUtils.isEmpty(strAmount))
-                            Toast.makeText(context, "Enter Amount", Toast.LENGTH_SHORT).show();
-                        else if (amount <= 0.0)
-                            Toast.makeText(context, "Amount can't be zero", Toast.LENGTH_SHORT).show();
-                        else if (!(statusCode == 1050 || statusCode == 4020)) {
-                            // If the status code is
-                            // 1290 - Collected Partial EMI - Phone
-                            // 1390 - Collected EMI Payment - Phone
 
-                            // 4040 - Collected Partial EMI - Field Visit
-                            // 4050 - Collected EMI Payment - Field Visit
 
-                            if (TextUtils.isEmpty(strTransRef))
-                                Toast.makeText(context, "Enter transaction ref number", Toast.LENGTH_SHORT).show();
-                            else if (paymentTypeSelected.getPaymentTypeId() == 0000)
-                                Toast.makeText(context, "Select payment type", Toast.LENGTH_SHORT).show();
-                            else {
-                                if (statusCode == 1390 || statusCode == 4050) {
-                                    double collectedAmount = 0;
-                                    String collected = data.getCollectedAmount();
-                                    if (collected != null && collected.length() > 0)
-                                        collectedAmount = Double.parseDouble(collected);
-                                    int total = (int) (amount + collectedAmount);
-                                    if (total > Double.parseDouble(data.getDueAmount())) {
-                                        showConfirmationDialog(null, false, data, statusCode, strTransKey,
-                                                strRemarks, strDate, amount, strTransRef, strPaymentType);
-                                    } else if (total == (int) Double.parseDouble(data.getDueAmount())) {
-                                        dialog.dismiss();
-                                        saveStatus(data, statusCode, strTransKey, strRemarks,
-                                                strDate, isPaymentDone(statusCode),
-                                                amount, strTransRef, isFollowUpReq(statusCode), strPaymentType);
-                                    } else
-                                        showCannotUpdateStatusDialog("Collected amount can't be less than due amount");
-                                } else {
-                                    dialog.dismiss();
-                                    saveStatus(data, statusCode, strTransKey, strRemarks,
-                                            strDate, isPaymentDone(statusCode),
-                                            amount, strTransRef, isFollowUpReq(statusCode), strPaymentType);
-                                }
-                            }
                         } else {
                             if (Utils.isConnected(context)) {
                                 dialog.dismiss();
                                 saveStatus(data, statusCode, strTransKey, strRemarks,
                                         strDate, isPaymentDone(statusCode),
-                                        amount, "", isFollowUpReq(statusCode), 0);
+                                         "", isFollowUpReq(statusCode), 0);
                             } else
                                 Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         dialog.dismiss();
                         if (Utils.isConnected(context)) {
-                            saveStatus(data, statusCode, strTransKey, strRemarks,
-                                    strDate, isPaymentDone(statusCode),
-                                    amount, strTransRef, isFollowUpReq(statusCode), strPaymentType);
+//                            saveStatus(data, statusCode, strTransKey, strRemarks,
+//                                    strDate, isPaymentDone(statusCode),
+//                                     strTransRef, isFollowUpReq(statusCode), strPaymentType);
                         } else
                             Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
                     }
-                }
+
             } catch (Exception e) {
                 System.out.println("<=== Save Status - Exception : ===> " + e.toString());
             }
@@ -794,7 +711,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         });
     }
 
-    public void showConfirmationDialog(File file, boolean isFileUpload, CaseData data, int statusCode, String strTransKey,
+    public void showConfirmationDialog(File file, boolean isFileUpload, JSONObject data, int statusCode, String strTransKey,
                                        String strRemarks, String nextActionDate,
                                        double amount, String strTransRef, int strPaymentType) {
         final AlertDialog dialogConfirm = new AlertDialog.Builder(context).create();
@@ -817,7 +734,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                     dialog.dismiss();
                     saveStatus(data, statusCode, strTransKey, strRemarks,
                             nextActionDate, isPaymentDone(statusCode),
-                            amount, strTransRef, isFollowUpReq(statusCode), strPaymentType);
+                             strTransRef, isFollowUpReq(statusCode), strPaymentType);
                 }
             }
         });
@@ -828,35 +745,33 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         dialogConfirm.show();
     }
 
-    private void createCallSession(CaseData caseData, String aiq) {
+    private void createCallSession(JSONObject caseDatajson, String aiq) {
         UserData currentUser = application.getCurrentUser();
         String agentNumber = application.getAgentPhoneNumber();
         String temp = agentNumber.replace(" ", "");
 //        String operatorNumber = application.getCallingOperator().equals("VIRTUO")
 //                ?Integer.toString(application.getVirtuoId())
 //                :aiq;
-        if (temp != null && caseData.getPhoneNumber() != null && aiq != null) {
-            ApiInterface apiService =
-                    ApiClient.getClient(context, 4).create(ApiInterface.class);
-            JsonObject object;
-            object = ApiUtil.getCallSessionObject(caseData.getRetraCaseId(),
-                    caseData.getPortfolioId(), caseData.getPhoneNumber(),
-                    agentNumber, aiq,
-                    Utils.getTransKey(currentUser));
-//            object = ApiUtil.getCallSessionObject(caseData.getRetraCaseId(),
-//                    caseData.getPortfolioId(), caseData.getPhoneNumber(),
-//                    agentNumber, operatorNumber,
-//                    Utils.getTransKey(currentUser));
-            Call<BaseResponse> call = apiService.createCallSession(object);
-            if (caseData.getStatusCode() != 1290 &&
-                    caseData.getStatusCode() != 1390 &&
-                    caseData.getStatusCode() != 4040 &&
-                    caseData.getStatusCode() != 4050) {
-                showStatusUpdateDialog(caseData, 'Y');
-            }
-            call.enqueue(new CallSessionCallBack(aiq, caseData.getPhoneNumber()));
-        } else
-            Toast.makeText(context, "Invalid phone numbers", Toast.LENGTH_SHORT).show();
+        try {
+            if (temp != null && caseDatajson.getString("phone_number") != null && aiq != null) {
+                ApiInterface apiService =
+                        ApiClient.getClient(context, 4).create(ApiInterface.class);
+                JsonObject object;
+                object = ApiUtil.getCallSessionObject(caseDatajson.getString("lu_case_realty_id"),
+                        "", caseDatajson.getString("phone_number"),
+                        agentNumber, aiq,
+                        Utils.getTransKey(currentUser));
+
+                Call<BaseResponse> call = apiService.createCallSession(object);
+                if ( caseDatajson.getString("status_code").equalsIgnoreCase("8200")) {
+                    showStatusUpdateDialog(caseDatajson, 'Y');
+                }
+                call.enqueue(new CallSessionCallBack(aiq, caseDatajson.getString("phone_number")));
+            } else
+                Toast.makeText(context, "Invalid phone numbers", Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createCallSessionOtherContacts(CaseData caseData, String phone, String aiq) {
@@ -876,16 +791,16 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                     caseData.getStatusCode() != 1390 &&
                     caseData.getStatusCode() != 4040 &&
                     caseData.getStatusCode() != 4050) {
-                showStatusUpdateDialog(caseData, 'Y');
+                //showStatusUpdateDialog(caseData, 'Y');
             }
             call.enqueue(new CallSessionCallBack(aiq, phone));
         } else
             Toast.makeText(context, "Invalid phone numbers", Toast.LENGTH_SHORT).show();
     }
 
-    private void saveStatus(CaseData caseData, int status, String transKey,
+    private void saveStatus(JSONObject caseData, int status, String transKey,
                             String remarks, String nextActionDate,
-                            String isPaymentDone, double amount, String transRef, String isFollowupReq, int paymentType) {
+                            String isPaymentDone, String transRef, String isFollowupReq, int paymentType) {
         strRemarks = remarks;
         context.showProgressDialog("Please Wait", "Updating Case Status...");
 
@@ -895,17 +810,23 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 
         ApiInterface apiService =
                 ApiClient.getClient(context, 2).create(ApiInterface.class);
-        JsonObject object;
-        if (status == 1050 || status == 4020) {
-            object = ApiUtil.getPTPStatusObject(caseData.getCaseUuid(),
-                    status, remarks, caseData.getPhoneNumber(), transKey,
-                    isPaymentDone, amount, transRef, paymentType,
-                    nextActionDate, nextActionDate, isFollowupReq);
+        JsonObject object = null;
+        try {
+        if (status == 8000 || status == 8100) {
+          
+                object = ApiUtil.getPTPStatusObject(caseData.getString("lu_case_realty_id"),
+                        status, remarks, caseData.getString("phone_number"), transKey,
+                        isPaymentDone,  transRef, paymentType,
+                        nextActionDate, nextActionDate, isFollowupReq);
+            
         } else {
-            object = ApiUtil.getStatusObject(caseData.getCaseUuid(),
-                    status, remarks, caseData.getPhoneNumber(), transKey,
-                    isPaymentDone, amount, transRef, paymentType,
+            object = ApiUtil.getStatusObject(caseData.getString("lu_case_realty_id"),
+                    status, remarks, caseData.getString("phone_number"), transKey,
+                    isPaymentDone, transRef, paymentType,
                     nextActionDate, nextActionDate, isFollowupReq);
+        }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         Call<BaseResponse> call = apiService.updateCaseStatus(object);
         call.enqueue(new CasesStatusCallBack(status, modePosition));
@@ -1053,7 +974,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         return 0;
     }
 
-    static class CaseViewHolder extends RecyclerView.ViewHolder {
+    static class NonCaseViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName, tvAgreementId, tvScore, tvDueAmount, tvPrinciple, tvPhoneNumber,
                 tvName, tvStatus, tvCity, tvRemarks, tvBucket, tvContactMode, tvEMI, tvOtherContact1, tvOtherContact2;
         ImageView imgCall, imgEdit, imgSave, imgOtherContact;
@@ -1063,7 +984,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         TableRow trOtherContact1, trOtherContact2;
         JSONObject jsonObject;
 
-        CaseViewHolder(View itemView) {
+        NonCaseViewHolder(View itemView) {
             super(itemView);
 
             textViewName = itemView.findViewById(R.id.textViewName);

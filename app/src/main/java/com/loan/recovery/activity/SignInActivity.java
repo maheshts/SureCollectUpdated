@@ -71,8 +71,8 @@ public class SignInActivity extends BaseActivity {
         application = LoanApplication.getInstance();
         tvVersion = (TextView) view.findViewById(R.id.tvVersion);
         tvVersion.setText(getResources().getText(R.string.app_version));
-        binding.etEmail.setText("mayur.prajapati");
-        binding.etPassword.setText("testme");
+        binding.etEmail.setText("agent1.raymond");
+        binding.etPassword.setText("Raymond@007");
         permissionSum = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CALL_PHONE)
                 + ContextCompat.checkSelfPermission(
@@ -173,7 +173,7 @@ public class SignInActivity extends BaseActivity {
                 String phoneNumber = binding.etEmail.getText().toString().trim();
                 String pin = binding.etPassword.getText().toString().trim();
 
-                callOtherApis(apiResult.getData().getUserId());
+                callOtherApis(apiResult.getData().getUserId(),apiResult.getData().getPartnerId());
 
                 Utils.storeUserDataInApplication(apiResult.getData());
                 //Utils.storeCredentialsInPreferences(SignInActivity.this, phoneNumber, pin);
@@ -191,7 +191,7 @@ public class SignInActivity extends BaseActivity {
         }
     }
 
-    private void callOtherApis(String userId) {
+    private void callOtherApis(String userId,String patnerid) {
         ApiInterface apiService =
                 ApiClient.getClient(this, 1).create(ApiInterface.class);
 //        Call<StatusCallResponse> call = apiService.getStatusList("0", "26");
@@ -200,8 +200,15 @@ public class SignInActivity extends BaseActivity {
         showProgressDialog("Please Wait", "Retrieving data...");
 
         apistatuscounter = 0;
-        Call<StatusCallResponse> call = apiService.getModeStatusList(11);
-        call.enqueue(new StatusCallBack());
+
+
+        if(patnerid.equalsIgnoreCase("1024")) {
+            Call<StatusCallResponse> callreal = apiService.getRealStateStatusList(1024, 15);
+            callreal.enqueue(new RealStateStatusCallBack());
+        }else{
+            Call<StatusCallResponse> call = apiService.getModeStatusList(11);
+            call.enqueue(new StatusCallBack());
+        }
 
         Call<StatusCallResponse> call4 = apiService.getModeStatusList(12);
         call4.enqueue(new StatusCallBack2());
@@ -338,6 +345,38 @@ public class SignInActivity extends BaseActivity {
     }
 
     class StatusCallBack implements Callback<StatusCallResponse> {
+        @Override
+        public void onResponse(Call<StatusCallResponse> call, Response<StatusCallResponse> response) {
+            apistatuscounter = apistatuscounter + 1;
+            Log.v("apistatuscounter","Mahesh"+apistatuscounter);
+
+            System.out.println("<=== StatusCallBack - Response : ===> Count "+apistatuscounter+ new Gson().toJson(response.body()));
+            Log.v("login","Mahesh"+new Gson().toJson(response.body()));
+            //Toast.makeText(getApplicationContext(), ""+new Gson().toJson(response.body()), Toast.LENGTH_SHORT).show();
+            //  System.out.println("<=== StatusCallBack -Login Response : ===> " + new Gson().toJson(response.body()));
+            StatusCallResponse statusCallResponse = response.body();
+            assert statusCallResponse != null;
+            List<Status> statusList = statusCallResponse.getStatusList();
+
+            Status status = new Status();
+            status.setStatusName("Select Status");
+            status.setStatusCode(0000);
+
+            statusList.add(0, status);
+            application.setPhoneStatusList(statusList);
+            //startService(new Intent(getApplicationContext(), MyService()))
+            // startService(new Intent(getApplicationContext(), MyService.class));
+            if(apistatuscounter == 5){
+                setData();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<StatusCallResponse> call, Throwable t) {
+            System.out.println("<=== StatusCallBack - Response : ===> " + t.getMessage());
+        }
+    }
+    class RealStateStatusCallBack implements Callback<StatusCallResponse> {
         @Override
         public void onResponse(Call<StatusCallResponse> call, Response<StatusCallResponse> response) {
             apistatuscounter = apistatuscounter + 1;

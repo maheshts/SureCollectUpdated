@@ -176,8 +176,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
             if (mPatnerId == 1023) { ///for non retra user
                 //Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
                 getNonRetraCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "", "", "", "N");
-
-
+            }else if (mPatnerId == 1024) { ///for non retra user
+                //Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
+                getRealStateCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "", "", "", "N");
             } else {
                 Call<CasesList> call = apiService.getCasesList(userData.getUserId(), roles.getRoleId(), "" + start, "" + end, "11");
                 call.enqueue(new CasesCallBack());
@@ -185,7 +186,101 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    private void getNonRetraCasesList(String start, String end, int partnerid,String fname,String lname,
+    private void getRealStateCasesList(String start, String end, int partnerid,String fname,String lname,
+                                       String phoneNumber, String status, String email,
+                                      String caseid) {
+        activity.showProgressDialog("Please Wait", "Getting Data...");
+        isFilter = true;
+        JsonObject json = new JsonObject();
+        UserData userData = application.getCurrentUser();
+        ApiInterface apiService =
+                ApiClient.getClient(activity, 5).create(ApiInterface.class);
+        if (userData != null) {
+            Roles roles = userData.getRoles();
+
+            json.addProperty("endRows", "10");
+            json.addProperty("firstName", "");
+            json.addProperty("email", email);
+            json.addProperty("fkPartnerId", "1024");
+            json.addProperty("forExport", "N");
+            json.addProperty("lastName", lname);
+            json.addProperty("loggedInRoleId", "25");
+            json.addProperty("loggedinUserId", "10097");
+            json.addProperty("partnerCaseId", "");
+            json.addProperty("phoneNumber", phoneNumber);
+            json.addProperty("selectedUserId", "");
+            json.addProperty("sortByColumn", "");
+            json.addProperty("selectedUserId", "10097");
+            json.addProperty("startRows", "0");
+            json.addProperty("statusCode", status);
+            json.addProperty("sortByOrder", "");
+
+            Log.v("2222", "json" + json);
+            // Toast.makeText(getContext(), "json"+json, Toast.LENGTH_SHORT).show();
+//            call = apiService.getCaseList("1172", "25",
+//                    "0", "10", "1002", "", "",
+//                    "","", "","N","", "1172","");
+//            call.enqueue(new CasesCallBack());
+
+            Call<Object> call = apiService.getRealEstateCaseList(json);
+            Log.v("1111", "jsonstarted");
+
+            //Call<BaseResponse> call
+            //Log.v("ccc",call.)
+            //call.enqueue(new NonRetraCasesCallBack());
+            //call.enqueue(new NonRetraCasesCallBack<NonRetraBaseResponse>(){
+            call.enqueue(new Callback() {
+
+                @Override
+                public void onResponse(Call call, Response response) {
+                    Log.e("TAG", "response 33: " + new Gson().toJson(response.body()));
+                    activity.hideProgressDialog();
+                    // NonRetraCasesResponse casesList = (NonRetraCasesResponse) response.body();
+                    try {
+                        JSONObject json1 = new JSONObject(new Gson().toJson(response.body()));
+                        Log.v("1111", "json1" + json1);
+                        binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.tvNoCases.setVisibility(View.GONE);
+                        binding.loutPages.setVisibility(View.VISIBLE);
+                        List<JSONObject> itemList = new ArrayList<>();
+                        JSONArray dataJsonArray = json1.getJSONObject("result").getJSONArray("data");
+                        for (int i = 0; i < dataJsonArray.length(); i++) {
+                            JSONObject json = dataJsonArray.getJSONObject(i);
+                            itemList.add(json);
+                        }
+
+
+                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this);
+                        binding.recyclerView.setAdapter(noncaseadapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //  JsonObject post = new JsonObject().get(response.body().toString()).getAsJsonObject();
+                    // Log.v("1111J","json"+ post);
+
+//        if (casesList != null) {
+//            List<NonRetraCasesData> caseData = casesList.getCaseListData();
+//            if (caseData != null && caseData.size() > 0) {
+//                //populateCases(caseData);
+//                binding.recyclerView.setVisibility(View.VISIBLE);
+//                binding.tvNoCases.setVisibility(View.GONE);
+//                binding.loutPages.setVisibility(View.VISIBLE);
+//            }else{
+//                noCases();
+//            }
+//        }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.e("TAG", "onFailure: " + t.toString());
+                    // Log error here since request failed
+                }
+            });
+
+        }
+    }
+private void getNonRetraCasesList(String start, String end, int partnerid,String fname,String lname,
                                        String phoneNumber, String status, String email,
                                       String caseid) {
         activity.showProgressDialog("Please Wait", "Getting Cases List...");
