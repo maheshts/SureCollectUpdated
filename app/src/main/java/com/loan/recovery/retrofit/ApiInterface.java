@@ -15,6 +15,8 @@ import com.loan.recovery.retrofit.model.SignInResponse;
 import com.loan.recovery.retrofit.model.StatusCallResponse;
 import com.loan.recovery.retrofit.model.UserPhoneResponse;
 
+import org.json.JSONObject;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -129,10 +131,7 @@ public interface ApiInterface {
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     Call<StatusCallResponse> getRealStateStatusList(@Field("partner_id") int pId,@Field("contact_mode_type_id") int cmodeId);
 
-    @FormUrlEncoded
-    @POST("updateCaseEdu")
-    @Headers({"Content-Type: application/x-www-form-urlencoded"})
-    Call<StatusCallResponse> updateStatus(@Field("caseEduId") int caseId,@Field("statusCode") int status);
+
 
     @FormUrlEncoded
     @POST("getOtherContactDetails")
@@ -203,6 +202,12 @@ public interface ApiInterface {
     @POST("saveUserEvent")
     @Headers({"Content-Type: application/json"})
     Call<BaseResponse> saveUserEvent(@Body JsonObject latLongData);
+
+    @POST("updateCaseEdu")
+    @Headers({"Content-Type: application/json"})
+    Call<BaseResponse> updateRealstateStatus(@Body JSONObject jsonObject);
+
+
 
     @FormUrlEncoded
     @POST("updateUserPhoneNumber")

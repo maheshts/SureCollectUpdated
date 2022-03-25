@@ -335,7 +335,7 @@ public class SignInActivity extends BaseActivity {
             apistatuscounter = apistatuscounter+1;
             Log.v("apistatuscounter","Mahesh"+apistatuscounter);
 
-            System.out.println("<=== PaymentTypesCallBack - Response : ===> Count "+apistatuscounter + new Gson().toJson(response.body()));
+            System.out.println("<=== ProjectTypesCallBack - Response : ===> Count "+apistatuscounter + new Gson().toJson(response.body()));
             ProjectTypesResponse paymentTypesResponse = response.body();
             List<ProjectData> partners = paymentTypesResponse.getPaymentTypeList();
             ProjectData partner = new ProjectData();
@@ -343,9 +343,9 @@ public class SignInActivity extends BaseActivity {
             partner.setProjectId(0000);
             partners.add(0, partner);
             application.setProjectTypes(partners);
-//            if(apistatuscounter == 5){
-//                setData();
-//            }
+            if(apistatuscounter == 7){
+                setData();
+            }
         }
 
         @Override
@@ -371,9 +371,9 @@ public class SignInActivity extends BaseActivity {
             partners.add(0, partner);
             application.setConfigTypes(partners);
 
-//            if(apistatuscounter == 5){
-//                setData();
-//            }
+            if(apistatuscounter == 7){
+                setData();
+            }
         }
 
         @Override

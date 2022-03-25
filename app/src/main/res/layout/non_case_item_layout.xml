@@ -108,7 +108,7 @@
                     <TableRow android:padding="5dp" android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="130dip"
+                            android:layout_width="125dip"
                             android:layout_height="wrap_content"
                             android:text="Case Id"
                             android:textSize="18sp" />
@@ -125,7 +125,7 @@
                     <TableRow android:padding="5dp" android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="130dip"
+                            android:layout_width="125dip"
                             android:layout_height="wrap_content"
                             android:text="Assigned To"
                             android:textSize="18sp" />
@@ -145,7 +145,7 @@
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="130dip"
+                            android:layout_width="125dip"
                             android:layout_height="wrap_content"
                             android:text="First Name"
                             android:textSize="18sp" />
@@ -163,16 +163,32 @@
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="130dip"
+                            android:layout_width="125dip"
                             android:layout_height="wrap_content"
                             android:text="Phone Number"
                             android:textSize="18sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvPhoneNumber"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Tony Stark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                    <TableRow android:padding="5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="125dip"
+                            android:layout_height="wrap_content"
+                            android:text="Alternate Number"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvAlterNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </TableRow>
@@ -210,6 +226,38 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </TableRow>
+                    <TableRow android:padding="5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Project Name"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvProject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+<TableRow android:padding="5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Configuration"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvConfi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
 
                     <TableRow android:padding="5dp" android:visibility="gone">
 
@@ -231,7 +279,7 @@
                     <TableRow android:padding="5dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="130dip"
+                            android:layout_width="125dip"
                             android:layout_height="wrap_content"
                             android:text="Status"
                             android:textSize="18sp" />
@@ -264,7 +312,38 @@
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </TableRow>
+                    <TableRow android:padding="5dp">
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Next Action Date"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/nextdate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                    <TableRow android:padding="5dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Proposed Visit Date"
+                            android:textSize="18sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/visitdate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
                     <TableRow android:padding="5dp"                             android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatTextView

@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Real
         clearFilters();
         configDataList = application.getConfigTypes();
         projectLists = application.getProjectTypes();
-        Toast.makeText(getContext(), "size "+configDataList.size(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "size "+configDataList.size(), Toast.LENGTH_SHORT).show();
     }
 
     private void clearFilters() {
@@ -1141,7 +1141,7 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
         if (dialog != null && dialog.isShowing())
             dialog.dismiss();
         projectData = partner;
-        tvPartners.setText(partner.toString());
+        tvPartners.setText(projectData.getProjectName());
     }
 
     @Override
@@ -1149,7 +1149,7 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
         if (dialog != null && dialog.isShowing())
             dialog.dismiss();
         configData = partner;
-        tvConfigs.setText(partner.toString());
+        tvConfigs.setText(configData.getProjectName());
     }
 
     class CasesCallBack implements Callback<CasesList> {

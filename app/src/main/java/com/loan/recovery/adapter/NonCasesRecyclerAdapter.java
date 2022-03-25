@@ -35,6 +35,7 @@ import com.google.gson.JsonObject;
 import com.loan.recovery.LoanApplication;
 import com.loan.recovery.R;
 import com.loan.recovery.activity.HomeActivity;
+import com.loan.recovery.activity.SignInActivity;
 import com.loan.recovery.fragments.DatePickerFragment;
 import com.loan.recovery.fragments.HomeFragment;
 import com.loan.recovery.retrofit.ApiClient;
@@ -45,6 +46,7 @@ import com.loan.recovery.retrofit.model.FileUploadResponse;
 import com.loan.recovery.retrofit.model.Partner;
 import com.loan.recovery.retrofit.model.PaymentType;
 import com.loan.recovery.retrofit.model.Status;
+import com.loan.recovery.retrofit.model.StatusCallResponse;
 import com.loan.recovery.retrofit.model.UserData;
 import com.loan.recovery.retrofit.util.ApiUtil;
 import com.loan.recovery.util.AppConstants;
@@ -127,13 +129,20 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                 holder.imgEdit.setTag(casejson.getString("status_code"));
                 holder.tvDueAmount.setText(": " + casejson.getString("last_name"));
                 holder.tvPrinciple.setText(": " + casejson.getString("email_address"));
+                holder.tvProjectName.setText(": " + casejson.getString("project_name"));
+
+                holder.tvConfiguration.setText(": " + casejson.getString("room_configuration"));
+                holder.tvAlternateNo.setText(": " + casejson.getString("alt_phone_number1"));
+                holder.tvNextDate.setText(": " + casejson.getString("next_action_date"));
+                holder.tvProposeVisitDate.setText(": " + casejson.getString("proposed_visit_date"));
+
                 holder.tvPhoneNumber.setText(": " + strPhone);
                 if (casejson.has("lu_case_realty_id")) {
                     holder.tvAgreementId.setText(":" + "#" + casejson.getString("lu_case_realty_id"));
                 }
                 holder.tvScore.setText(": " + casejson.getString("first_name"));
 //            holder.tvCity.setText(": " + ((caseData.getOffCityName() != null) ? caseData.getOffCityName() : "NA"));
-                holder.tvStatus.setText(": " + casejson.getString("status_code"));
+                holder.tvStatus.setText(": " + casejson.getString("status_name"));
 //            holder.tvRemarks.setText(": " + caseData.getRemarks());
 //            holder.tvBucket.setText(": " + caseData.getPartnerBucketNumber());
 //            holder.tvContactMode.setText(": " + getModeString(caseData.getContactMode()));
@@ -363,12 +372,14 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         RelativeLayout loutStatus = view.findViewById(R.id.loutStatus);
         RelativeLayout loutMode = view.findViewById(R.id.loutMode);
         RelativeLayout loutPaymentType = view.findViewById(R.id.loutPaymentMode);
-        RelativeLayout crlayout = view.findViewById(R.id.lout9);
+        RelativeLayout crlayout = view.findViewById(R.id.lout1);
         tvStatus = view.findViewById(R.id.tvSelectStatus);
         tvPaymentType = view.findViewById(R.id.tvSelectPaymentMode);
         tvDate = view.findViewById(R.id.tvDate);
         tvAmount = view.findViewById(R.id.tvAmount);
         tvMode = view.findViewById(R.id.tvSelectMode);
+        crlayout.setVisibility(View.GONE);
+
         if(mPatnerId == 1024){
             crlayout.setVisibility(View.GONE);
         }else{
@@ -463,21 +474,34 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                         Toast.makeText(context, "Select Status", Toast.LENGTH_SHORT).show();
                     else if (TextUtils.isEmpty(strRemarks))
                         Toast.makeText(context, "Enter Remarks", Toast.LENGTH_SHORT).show();
-                    else if (statusCode == 8000 || statusCode == 8100 ) {
-                        if (TextUtils.isEmpty(strDate))
-                            Toast.makeText(context, "Select Date", Toast.LENGTH_SHORT).show();
-
-
-                        } else {
-                            if (Utils.isConnected(context)) {
+                    else{
+                        Toast.makeText(application.getContext(), "success", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        if (Utils.isConnected(context)) {
                                 dialog.dismiss();
-                                saveStatus(data, statusCode, strTransKey, strRemarks,
-                                        strDate, isPaymentDone(statusCode),
-                                         "", isFollowUpReq(statusCode), 0);
+                            //saveRealstateStatus(data.getString(""));
                             } else
                                 Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
                         }
+                            //caseData
+
+
+//                    else if (statusCode == 8000 || statusCode == 8100 ) {
+//                        if (TextUtils.isEmpty(strDate))
+//                            Toast.makeText(context, "Select Date", Toast.LENGTH_SHORT).show();
+//
+//
+//                        } else {
+//                            if (Utils.isConnected(context)) {
+//                                dialog.dismiss();
+//                                saveStatus(data, statusCode, strTransKey, strRemarks,
+//                                        strDate, isPaymentDone(statusCode),
+//                                         "", isFollowUpReq(statusCode), 0);
+//                            } else
+//                                Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+//                        }
                     } else {
+                    Toast.makeText(application.getContext(), "sucess", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         if (Utils.isConnected(context)) {
 //                            saveStatus(data, statusCode, strTransKey, strRemarks,
@@ -610,15 +634,20 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                 Toast.makeText(context, "Status is not updated", Toast.LENGTH_SHORT).show();
             } else {
                 if (baseResponse.getStatusCode() == 1000) {
-                    if (modeType == 1)
-                        saveLatLng(statusCode + "", "1001", null);
+                    if(mPatnerId == AppConstants.REALESTATE_TYPE){
+                        Toast.makeText(context, "Status is updated successfully", Toast.LENGTH_SHORT).show();
+
+                    }else {
+                        if (modeType == 1)
+                            saveLatLng(statusCode + "", "1001", null);
 //                    CaseData caseData = caseDataList.get(currentPosition);
 //                    caseData.setStatusCode(statusSelected.getStatusCode());
 //                    caseData.setStatusName(statusSelected.getStatusName());
 //                    caseData.setRemarks(strRemarks);
 //                    caseDataList.set(currentPosition, caseData);
 //                    notifyItemChanged(currentPosition);
-                    Toast.makeText(context, "Status is updated successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Status is updated successfully", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (baseResponse.getStatusCode() == 2345) {
                     Toast.makeText(context, "Amount is already collected for this case", Toast.LENGTH_LONG).show();
                 } else {
@@ -842,6 +871,29 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         call.enqueue(new CasesStatusCallBack(status, modePosition));
     }
 
+    private void saveRealstateStatus(JSONObject caseData, int status, String transKey) {
+
+        context.showProgressDialog("Please Wait", "Updating Case Status...");
+
+
+
+        ApiInterface apiService =
+                ApiClient.getClient(context, 2).create(ApiInterface.class);
+        JsonObject object = null;
+
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("caseEduId","");
+            json.put("statusCode","");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Call<BaseResponse> call = apiService.updateRealstateStatus(json);
+        call.enqueue(new CasesStatusCallBack(status, modePosition));
+    }
+
     private void saveLatLng(String status, String pageId, String snapRefId) {
         // Parsing any Media type file
         System.out.println("<=== Update LatLng - Started ========> ");
@@ -985,8 +1037,8 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
     }
 
     static class NonCaseViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewName, tvAgreementId, tvScore, tvDueAmount, tvPrinciple, tvPhoneNumber,
-                tvName, tvStatus, tvCity, tvRemarks, tvBucket, tvContactMode, tvEMI, tvOtherContact1, tvOtherContact2;
+        TextView textViewName, tvAgreementId, tvScore, tvDueAmount, tvPrinciple, tvPhoneNumber,tvAlternateNo,tvProjectName,tvConfiguration,tvStatus,tvNextDate,tvProposeVisitDate,
+                tvName,  tvCity, tvRemarks, tvBucket, tvContactMode, tvEMI, tvOtherContact1, tvOtherContact2;
         ImageView imgCall, imgEdit, imgSave, imgOtherContact;
         LinearLayout linearLayout;
         RelativeLayout loutParent;
@@ -999,6 +1051,14 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 
             textViewName = itemView.findViewById(R.id.textViewName);
             tvAgreementId = itemView.findViewById(R.id.tvAgreementId);
+
+            tvProjectName = itemView.findViewById(R.id.tvProject);
+            tvConfiguration = itemView.findViewById(R.id.tvConfi);
+            tvNextDate = itemView.findViewById(R.id.nextdate);
+            tvProposeVisitDate = itemView.findViewById(R.id.visitdate);
+            tvAlternateNo = itemView.findViewById(R.id.tvAlterNumber);
+
+
             tvScore = itemView.findViewById(R.id.tvScore);
             tvDueAmount = itemView.findViewById(R.id.tvDueAmount);
             tvPrinciple = itemView.findViewById(R.id.tvPrinciple);
