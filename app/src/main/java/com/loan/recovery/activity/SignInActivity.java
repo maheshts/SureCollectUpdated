@@ -293,7 +293,7 @@ public class SignInActivity extends BaseActivity {
 //            Log.v("111","virtuoId"+virtuoId);
 //            LoanApplication.getInstance().virtuoId  = virtuoId;
 //            Log.v("111","virtuoId"+ LoanApplication.getInstance().virtuoId);
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
 
@@ -319,7 +319,7 @@ public class SignInActivity extends BaseActivity {
             partner.setPaymentTypeId(0000);
             partners.add(0, partner);
             application.setPaymentTypes(partners);
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
         }
@@ -398,7 +398,7 @@ public class SignInActivity extends BaseActivity {
             partner.setPartnerUuid("NA");
             partners.add(0, partner);
             application.setPartners(partners);
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
         }
@@ -431,7 +431,7 @@ public class SignInActivity extends BaseActivity {
             application.setPhoneStatusList(statusList);
             //startService(new Intent(getApplicationContext(), MyService()))
             // startService(new Intent(getApplicationContext(), MyService.class));
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
         }
@@ -463,7 +463,7 @@ public class SignInActivity extends BaseActivity {
             application.setPhoneStatusList(statusList);
             //startService(new Intent(getApplicationContext(), MyService()))
             // startService(new Intent(getApplicationContext(), MyService.class));
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
         }
@@ -497,7 +497,7 @@ public class SignInActivity extends BaseActivity {
 
             statusList.add(0, status);
             application.setFieldStatusList(statusList);
-            if(apistatuscounter == 5){
+            if(apistatuscounter == 7){
                 setData();
             }
         }
