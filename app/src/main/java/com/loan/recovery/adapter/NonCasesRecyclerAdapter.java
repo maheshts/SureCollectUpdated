@@ -13,10 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,8 +42,6 @@ import com.loan.recovery.retrofit.ApiInterface;
 import com.loan.recovery.retrofit.model.BaseResponse;
 import com.loan.recovery.retrofit.model.CaseData;
 import com.loan.recovery.retrofit.model.FileUploadResponse;
-import com.loan.recovery.retrofit.model.OtherContact;
-import com.loan.recovery.retrofit.model.OtherContactResponse;
 import com.loan.recovery.retrofit.model.Partner;
 import com.loan.recovery.retrofit.model.PaymentType;
 import com.loan.recovery.retrofit.model.Status;
@@ -83,6 +78,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
     private List<Status> statusList;
     private List<PaymentType> paymentTypes;
     private EditText etDate;
+    int mPatnerId;
     private Status statusSelected;
     private PaymentType paymentTypeSelected;
     private AppCompatTextView tvStatus, tvPaymentType, tvDate, tvAmount, tvMode;
@@ -93,13 +89,13 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
     private int modePosition = 0;
     private StatusListAdapter listAdapter;
 
-    public NonCasesRecyclerAdapter(List<JSONObject> caseData, HomeActivity context, HomeFragment fragment) {
+    public NonCasesRecyclerAdapter(List<JSONObject> caseData, HomeActivity context, HomeFragment fragment, int mPatnerId) {
         this.caseDataList = caseData;
         this.context = context;
         this.homeFragment = fragment;
         application = LoanApplication.getInstance();
         paymentTypeSelected = new PaymentType();
-        paymentTypeSelected.setPaymentTypeName("Select Payment Type");
+        paymentTypeSelected.setPaymentTypeName("Select Type");
         paymentTypeSelected.setPaymentTypeId(0000);
         statusSelected = new Status();
         statusSelected.setStatusName("Select Status");
@@ -128,6 +124,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
                 String aiqNumber = application.getPhoneNumbersList().get(0).getUserPhone();
                 holder.tvName.setText(": " + casejson.getString("assigned_to"));
                 holder.textViewName.setText(casejson.getString("user_name"));
+                holder.imgEdit.setTag(casejson.getString("status_code"));
                 holder.tvDueAmount.setText(": " + casejson.getString("last_name"));
                 holder.tvPrinciple.setText(": " + casejson.getString("email_address"));
                 holder.tvPhoneNumber.setText(": " + strPhone);
@@ -290,13 +287,19 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 
 
 
-//            holder.imgEdit.setOnClickListener(v -> {
-//                currentPosition = position;
-//                currentCase = caseData;
-//                int statusCode = caseData.getStatusCode();
-//                List<Status> statuses = application.getPhoneStatusList();
-//                // 1290 - Partially collected
-//                //1390 - Full EMI Collected
+            holder.imgEdit.setOnClickListener(v -> {
+                currentPosition = position;
+                //currentCase = caseData;
+               // int statusCode = caseData.getStatusCode();
+                try {
+                    int statusCode = casejson.getInt("status_code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                List<Status> statuses = application.getPhoneStatusList();
+                // 1290 - Partially collected
+                //1390 - Full EMI Collected
+                showStatusUpdateDialog(casejson, 'N');
 //                if (statusCode == 1290 || statusCode == 1390) {
 //                    if (caseData.getMultiPayment().equalsIgnoreCase("N")) {
 //                        showCannotUpdateStatusDialog(null);
@@ -306,7 +309,7 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
 //                }else {
 //                    showStatusUpdateDialog(caseData, 'N');
 //                }
-//            });
+            });
 
 //            holder.imgSave.setOnClickListener(v -> {
 //                currentCase = caseData;
@@ -360,11 +363,18 @@ public class NonCasesRecyclerAdapter extends RecyclerView.Adapter<NonCasesRecycl
         RelativeLayout loutStatus = view.findViewById(R.id.loutStatus);
         RelativeLayout loutMode = view.findViewById(R.id.loutMode);
         RelativeLayout loutPaymentType = view.findViewById(R.id.loutPaymentMode);
+        RelativeLayout crlayout = view.findViewById(R.id.lout9);
         tvStatus = view.findViewById(R.id.tvSelectStatus);
         tvPaymentType = view.findViewById(R.id.tvSelectPaymentMode);
         tvDate = view.findViewById(R.id.tvDate);
         tvAmount = view.findViewById(R.id.tvAmount);
         tvMode = view.findViewById(R.id.tvSelectMode);
+        if(mPatnerId == 1024){
+            crlayout.setVisibility(View.GONE);
+        }else{
+            crlayout.setVisibility(View.VISIBLE);
+
+        }
 
         loutStatus.setOnClickListener(v -> showCustomSpinnerDialog(1, null));
         loutPaymentType.setOnClickListener(v -> showCustomSpinnerDialog(2, paymentTypes));

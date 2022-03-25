@@ -40,6 +40,8 @@ import com.loan.recovery.adapter.CommonDataListAdapter;
 import com.loan.recovery.adapter.ContactModeListAdapter;
 import com.loan.recovery.adapter.NonCasesRecyclerAdapter;
 import com.loan.recovery.adapter.PartnerListAdapter;
+import com.loan.recovery.adapter.RealestateConfigListAdapter;
+import com.loan.recovery.adapter.RealestateProjectListAdapter;
 import com.loan.recovery.adapter.StatusListAdapter;
 import com.loan.recovery.database.Recording;
 import com.loan.recovery.database.RepositoryImpl;
@@ -50,10 +52,9 @@ import com.loan.recovery.retrofit.model.BaseResponse;
 import com.loan.recovery.retrofit.model.Case;
 import com.loan.recovery.retrofit.model.CaseData;
 import com.loan.recovery.retrofit.model.CasesList;
-import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
-import com.loan.recovery.retrofit.model.NonRetraCasesData;
-import com.loan.recovery.retrofit.model.NonRetraCasesResponse;
 import com.loan.recovery.retrofit.model.Partner;
+import com.loan.recovery.retrofit.model.ProjectConfigData;
+import com.loan.recovery.retrofit.model.ProjectData;
 import com.loan.recovery.retrofit.model.Roles;
 import com.loan.recovery.retrofit.model.Status;
 import com.loan.recovery.retrofit.model.UserData;
@@ -81,8 +82,8 @@ import retrofit2.Response;
  * Created by Mallikarjuna on 05/12/2020.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener,
-        StatusListAdapter.ItemClickListener, PartnerListAdapter.ItemClickListener,
+public class HomeFragment extends Fragment implements View.OnClickListener, RealestateConfigListAdapter.ItemClickListener,
+        StatusListAdapter.ItemClickListener, PartnerListAdapter.ItemClickListener,RealestateProjectListAdapter.ItemClickListener,
         CommonDataListAdapter.ItemClickListener, ContactModeListAdapter.ItemClickListener {
     private final String[] scoreOptions = {"Select Score", "0", "1",
             "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -95,15 +96,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
     private int currentPage = 1, lastPage = -1, casesCount = -1, modePosition = 0, mPatnerId;
     private AlertDialog dialog;
     private Partner partnerSelected;
+    private ProjectConfigData configData;
+    private ProjectData projectData;
     private Status statusSelected;
     private String scoreSelected, bucketSelected, strAgId, strPhone, strPOSAmount, strDueAmount, strContactMode;
-    private AppCompatTextView tvStatus, tvPartner, tvScore, tvContactMode, tvBucket;
+    private AppCompatTextView tvStatus, tvPartner, tvScore, tvContactMode, tvBucket,tvPartners,tvConfigs;
     private boolean isFilter = false, isFilterApplied = false;
     private CasesRecyclerAdapter adapter;
     private NonCasesRecyclerAdapter noncaseadapter;
     private MenuItem menuFilter;
     private List<Status> statusList;
     private StatusListAdapter listAdapter;
+    List<ProjectConfigData> configDataList;
+    List<ProjectData> projectLists;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -118,11 +123,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         activity = (HomeActivity) getActivity();
         application = LoanApplication.getInstance();
         clearFilters();
+        configDataList = application.getConfigTypes();
+        projectLists = application.getProjectTypes();
+        Toast.makeText(getContext(), "size "+configDataList.size(), Toast.LENGTH_SHORT).show();
     }
 
     private void clearFilters() {
         partnerSelected = new Partner();
         partnerSelected.setPartnerName("Select Partner");
+
+        configData = new ProjectConfigData();
+        configData.setProjectName("Select Partner");
+
+        projectData = new ProjectData();
+        projectData.setProjectName("Select Project");
 
         statusSelected = new Status();
         statusSelected.setStatusName("Select Status");
@@ -136,6 +150,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         strContactMode = "Phone";
         modePosition = 0;
         statusList = application.getPhoneStatusList();
+        configDataList = application.getConfigTypes();
+        projectLists = application.getProjectTypes();
     }
 
     @Nullable
@@ -173,12 +189,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         UserData userData = application.getCurrentUser();
         if (userData != null) {
             Roles roles = userData.getRoles();
-            if (mPatnerId == 1023) { ///for non retra user
+            if (mPatnerId == AppConstants.NONRETRA_TYPE) { ///for non retra user
                 //Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
                 getNonRetraCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "", "", "", "N");
-            }else if (mPatnerId == 1024) { ///for non retra user
+            }else if (mPatnerId == AppConstants.REALESTATE_TYPE) { ///for non retra user
                 //Toast.makeText(getContext(), "NON Re", Toast.LENGTH_SHORT).show();
-                getRealStateCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "", "", "", "N");
+                getRealStateCasesList("0", "10", mPatnerId, userData.getPartnerUuid(), strPhone, "",  "", "N");
             } else {
                 Call<CasesList> call = apiService.getCasesList(userData.getUserId(), roles.getRoleId(), "" + start, "" + end, "11");
                 call.enqueue(new CasesCallBack());
@@ -186,9 +202,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    private void getRealStateCasesList(String start, String end, int partnerid,String fname,String lname,
-                                       String phoneNumber, String status, String email,
-                                      String caseid) {
+    private void getRealStateCasesList(String start, String end, int partnerid,String fname,
+                                       String phoneNumber, String status, String selectpartnerid,
+                                      String projectid) {
         activity.showProgressDialog("Please Wait", "Getting Data...");
         isFilter = true;
         JsonObject json = new JsonObject();
@@ -200,13 +216,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
 
             json.addProperty("endRows", "10");
             json.addProperty("firstName", "");
-            json.addProperty("email", email);
+            json.addProperty("email", "");
             json.addProperty("fkPartnerId", "1024");
             json.addProperty("forExport", "N");
-            json.addProperty("lastName", lname);
+            json.addProperty("lastName", "");
             json.addProperty("loggedInRoleId", "25");
             json.addProperty("loggedinUserId", "10097");
-            json.addProperty("partnerCaseId", "");
+            json.addProperty("partnerCaseId", selectpartnerid);
+            json.addProperty("projectId", projectid);
             json.addProperty("phoneNumber", phoneNumber);
             json.addProperty("selectedUserId", "");
             json.addProperty("sortByColumn", "");
@@ -250,7 +267,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,
                         }
 
 
-                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this);
+                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this,mPatnerId);
                         binding.recyclerView.setAdapter(noncaseadapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -343,7 +360,7 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
                         }
 
 
-                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this);
+                        noncaseadapter = new NonCasesRecyclerAdapter(itemList, activity, HomeFragment.this, mPatnerId);
                         binding.recyclerView.setAdapter(noncaseadapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -415,6 +432,7 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
         //tvScore = view.findViewById(R.id.tvSelectScore);
         tvStatus = view.findViewById(R.id.tvSelectStatus);
         tvPartner = view.findViewById(R.id.tvSelectPartner);
+       TextView tvConfig = view.findViewById(R.id.tvSelectConfig);
        // tvContactMode = view.findViewById(R.id.tvSelectMode);
        // tvBucket = view.findViewById(R.id.tvSelectBucket);
 
@@ -429,6 +447,7 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
 
         tvStatus.setText(statusSelected.getStatusName());
         tvPartner.setText(partnerSelected.getPartnerName());
+     //   tvConfig.setText(partnerSelected.get());
       //  tvContactMode.setText(strContactMode);
        // tvBucket.setText(bucketSelected);
 
@@ -489,6 +508,116 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
             if (Utils.isConnected(activity)) {
                // getCasesList(0, 10, strAgId,selectedScore, selectedBucket, selectedPartner, strPhone, selectedStatus, strPOSAmount, strDueAmount, selectedMode);
                 getNonRetraCasesList("","",mPatnerId,fname,lname,phone,selectedStatus+"",email,"");
+            } else
+                Toast.makeText(activity, "No Internet", Toast.LENGTH_SHORT).show();
+        });
+        dialog.setView(view);
+        dialog.show();
+    }
+    private void showRealestateFilterDialog() {
+        statusList = application.getPhoneStatusList();
+        configDataList = application.getConfigTypes();
+        //configData = application.getPartnerTypes();
+        projectLists = application.getProjectTypes();
+        if (modePosition == 1)
+            statusList = application.getFieldStatusList();
+       // List<Partner> partnerList = application.getPartners();
+//        List<PartnerData> partnerLists = application.getPartnerTypes();
+//        List<ProjectData> projectLists = application.getProjectTypes();
+
+        AlertDialog dialog = new AlertDialog.Builder(activity).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.filter_dialog_realestate, null);
+        RelativeLayout loutStatus = view.findViewById(R.id.loutStatus);
+        RelativeLayout loutPartners = view.findViewById(R.id.loutPartner);
+        RelativeLayout loutConfig = view.findViewById(R.id.loutConf);
+
+
+        //tvScore = view.findViewById(R.id.tvSelectScore);
+        tvStatus = view.findViewById(R.id.tvSelectStatus);
+       // tvPartner = view.findViewById(R.id.tvSelectPartner);
+        tvPartners = view.findViewById(R.id.tvSelectPartners);
+        tvConfigs = view.findViewById(R.id.tvSelectConfig);
+       // tvContactMode = view.findViewById(R.id.tvSelectMode);
+       // tvBucket = view.findViewById(R.id.tvSelectBucket);
+
+
+        final Button btApply = view.findViewById(R.id.btApply);
+        final Button btClear = view.findViewById(R.id.btClear);
+
+        final EditText etPhone = view.findViewById(R.id.etPhone);
+        final EditText etFname = view.findViewById(R.id.etFname);
+
+
+        //tvStatus.setText(statusSelected.getStatusName());
+      //  tvPartner.setText(partnerSelected.getPartnerName());
+        //tvPartners.setText(configData.getProjectName());
+        //tvProjects.setText(projectData.getProjectName());
+      //  tvContactMode.setText(strContactMode);
+       // tvBucket.setText(bucketSelected);
+
+
+
+        etPhone.setText(strPhone);
+
+
+
+        loutStatus.setOnClickListener(v -> showCustomSpinnerDialog(2, null));
+        loutConfig.setOnClickListener(v -> showCustomSpinnerDialog(6, null));
+        loutPartners.setOnClickListener(v -> showCustomSpinnerDialog(7, null));
+
+        view.findViewById(R.id.imgClose).setOnClickListener(v -> dialog.dismiss());
+        btClear.setOnClickListener(v -> {
+            currentPage = 1;
+            clearFilters();
+            isFilterApplied = false;
+
+            etPhone.setText("");
+            etFname.setText("");
+
+            //etPOSAmount.setText("");
+            dialog.dismiss();
+            callAPI(0, 10);
+            menuFilter.setIcon(R.mipmap.filter);
+        });
+
+        btApply.setOnClickListener(v -> {
+            dialog.dismiss();
+            currentPage = 1;
+            isFilterApplied = true;
+            menuFilter.setIcon(R.mipmap.filter_applied);
+            //strAgId = etAgId.getText().toString().trim();
+            strPhone = etPhone.getText().toString().trim();
+           //String email = etemail.getText().toString().trim();
+           String fname = etFname.getText().toString().trim();
+           //String lname = etLname.getText().toString().trim();
+           String phone = etPhone.getText().toString().trim();
+
+
+            String selectedPartner = "";
+            if (!tvPartners.getText().equals("Select Partner"))
+                selectedPartner = configData.getProjectId() + "";
+
+            String selectedProject = "";
+            if (!tvPartners.getText().equals("Select Project"))
+                selectedProject = projectData.getProjectId() + "";
+          //  String selectedScore = "";
+            int selectedStatus = 0000;
+            if (!tvStatus.getText().equals("Select Status"))
+                selectedStatus = statusSelected.getStatusCode();
+
+            // 11 is for Phone
+            // 12 is for field visit
+//            String selectedMode = "";
+//            if (modePosition == 0)
+//                selectedMode = "11";
+//            else
+//                selectedMode = "12";
+
+            if (Utils.isConnected(activity)) {
+               // getCasesList(0, 10, strAgId,selectedScore, selectedBucket, selectedPartner, strPhone, selectedStatus, strPOSAmount, strDueAmount, selectedMode);
+                getRealStateCasesList("","",mPatnerId,fname,phone,selectedStatus+"",selectedPartner,selectedProject);
             } else
                 Toast.makeText(activity, "No Internet", Toast.LENGTH_SHORT).show();
         });
@@ -624,6 +753,14 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
             listView.setAdapter(listAdapter);
         } else if (dataType == 5) {
             CommonDataListAdapter listAdapter = new CommonDataListAdapter(activity, R.layout.project_list_item, bucketOptions, 'B');
+            listAdapter.setClickListener(this);
+            listView.setAdapter(listAdapter);
+        }else if (dataType == 6) {
+            final RealestateConfigListAdapter listAdapter = new RealestateConfigListAdapter(activity,  R.layout.project_list_item, configDataList);
+            listAdapter.setClickListener(this);
+            listView.setAdapter(listAdapter);
+        }else if (dataType == 7) {
+            final RealestateProjectListAdapter listAdapter = new RealestateProjectListAdapter(activity,  R.layout.project_list_item, projectLists);
             listAdapter.setClickListener(this);
             listView.setAdapter(listAdapter);
         } else {
@@ -878,6 +1015,8 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
             case R.id.filter:
                 if (mPatnerId == 1023) {
                     showNonRetraFilterDialog();
+                }else if (mPatnerId == 1024) {
+                    showRealestateFilterDialog();
                 }else{
                     showFilterDialog();
                 }
@@ -995,6 +1134,22 @@ private void getNonRetraCasesList(String start, String end, int partnerid,String
                 }
             });
         }
+    }
+
+    @Override
+    public void onItemClick(ProjectData partner) {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+        projectData = partner;
+        tvPartners.setText(partner.toString());
+    }
+
+    @Override
+    public void onItemClick(ProjectConfigData partner) {
+        if (dialog != null && dialog.isShowing())
+            dialog.dismiss();
+        configData = partner;
+        tvConfigs.setText(partner.toString());
     }
 
     class CasesCallBack implements Callback<CasesList> {

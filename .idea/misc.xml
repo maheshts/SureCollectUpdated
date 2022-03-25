@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/case_item_layout.xml" value="0.2125" />
-        <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/case_status_update_dialog.xml" value="0.19375" />
+        <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/case_status_update_dialog.xml" value="0.25" />
         <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/filter_dialog_new.xml" value="0.21" />
         <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/filter_dialog_nonretra.xml" value="0.2171875" />
+        <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/filter_dialog_realestate.xml" value="0.19375" />
+        <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/list_dialog.xml" value="0.1671875" />
         <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/layout/non_case_item_layout.xml" value="0.2125" />
         <entry key="..\:/DEV/Sample_Android/SureCollect/app/src/main/res/menu/main.xml" value="0.15416666666666667" />
       </map>

@@ -16,6 +16,8 @@ public class AppConstants {
     public static String BASE_URL5 = "https://surecollect.ai:9003/";
 
     public static String PREFERENCES_FILE_NAME = "surecollect";
+    public static int REALESTATE_TYPE = 1024;
+    public static int NONRETRA_TYPE = 1023;
     public static String API_CALL_TYPE = "application/x-www-form-urlencoded";
     //https://surecollect.ai:9003/getLuCaseEduData
 

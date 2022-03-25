@@ -6,10 +6,11 @@ import android.location.Location;
 
 import com.loan.recovery.retrofit.model.AirtelPhone;
 import com.loan.recovery.retrofit.model.Partner;
+import com.loan.recovery.retrofit.model.ProjectConfigData;
 import com.loan.recovery.retrofit.model.PaymentType;
+import com.loan.recovery.retrofit.model.ProjectData;
 import com.loan.recovery.retrofit.model.Status;
 import com.loan.recovery.retrofit.model.UserData;
-import com.loan.recovery.retrofit.model.UserPhone;
 
 import org.acra.ACRA;
 
@@ -21,6 +22,29 @@ public class LoanApplication extends Application {
     private static LoanApplication application;
     private List<Partner> partners;
     private List<PaymentType> paymentTypes;
+
+    public List<ProjectData> getProjectTypes() {
+        return projectTypes;
+    }
+
+    public void setProjectTypes(List<ProjectData> projectTypes) {
+        this.projectTypes = projectTypes;
+    }
+
+
+
+    private List<ProjectData> projectTypes;
+
+    public List<ProjectConfigData> getConfigTypes() {
+        return configTypes;
+    }
+
+    public void setConfigTypes(List<ProjectConfigData> configTypes) {
+        this.configTypes = configTypes;
+    }
+
+    //private List<ProjectConfigData> partnerTypes;
+    private List<ProjectConfigData> configTypes;
 //    private List<Status> statusList;
     private List<Status> phoneStatusList;
     private String agentPhoneNumber;

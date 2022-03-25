@@ -1,31 +1,22 @@
 package com.loan.recovery.retrofit;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.loan.recovery.retrofit.model.AirtelResponse;
 import com.loan.recovery.retrofit.model.BaseResponse;
 import com.loan.recovery.retrofit.model.CasesList;
 import com.loan.recovery.retrofit.model.DayReportList;
 import com.loan.recovery.retrofit.model.FileUploadResponse;
-import com.loan.recovery.retrofit.model.NonRetraBaseResponse;
-import com.loan.recovery.retrofit.model.NonRetraCaseRequest;
-import com.loan.recovery.retrofit.model.NonRetraCasesResponse;
 import com.loan.recovery.retrofit.model.OtherContactResponse;
 import com.loan.recovery.retrofit.model.PartnerCallResponse;
+import com.loan.recovery.retrofit.model.ConfigResponse;
 import com.loan.recovery.retrofit.model.PaymentTypesResponse;
-import com.loan.recovery.retrofit.model.Result;
+import com.loan.recovery.retrofit.model.ProjectTypesResponse;
 import com.loan.recovery.retrofit.model.SignInResponse;
 import com.loan.recovery.retrofit.model.StatusCallResponse;
 import com.loan.recovery.retrofit.model.UserPhoneResponse;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.Map;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -35,8 +26,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -141,9 +130,24 @@ public interface ApiInterface {
     Call<StatusCallResponse> getRealStateStatusList(@Field("partner_id") int pId,@Field("contact_mode_type_id") int cmodeId);
 
     @FormUrlEncoded
+    @POST("updateCaseEdu")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Call<StatusCallResponse> updateStatus(@Field("caseEduId") int caseId,@Field("statusCode") int status);
+
+    @FormUrlEncoded
     @POST("getOtherContactDetails")
     @Headers({"Content-Type: application/x-www-form-urlencoded"})
     Call<OtherContactResponse> getOtherContacts(@Field("caseId") int caseId);
+
+    @FormUrlEncoded
+    @POST("getRealEstateProject")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Call<ProjectTypesResponse> getProjects(@Field("partner_id") int partnerid);
+
+    @FormUrlEncoded
+    @POST("getRealEstateProjConf")
+    @Headers({"Content-Type: application/x-www-form-urlencoded"})
+    Call<ConfigResponse> getConfigData(@Field("projectId") int projectid);
 
     @FormUrlEncoded
     @POST("statuslist")

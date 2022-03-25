@@ -34,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/line"
+                android:visibility="gone"
                 android:layout_marginVertical="5dp"
                 android:padding="5dp">
 
@@ -70,7 +71,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNameLabel"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Customer Name"
@@ -101,7 +102,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvPhoneNumberLabel"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Contact Phone"
@@ -133,7 +134,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvMinDueLabel"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="Min Due"
@@ -166,7 +167,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvPOSLabel"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="POS"
@@ -228,7 +229,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvMode"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Contact Mode"
@@ -276,7 +277,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvStatus"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Status"
@@ -329,7 +330,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDate"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/date"
@@ -367,7 +368,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAmount"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Paid Amount"
@@ -405,7 +406,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTrRefNum"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Transaction Ref"
@@ -442,7 +443,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvRemarks"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Remarks"
@@ -492,7 +493,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvPaymentMode"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="Payment Mode"
@@ -525,7 +526,7 @@
 
                 <Button
                     android:id="@+id/btSave"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/green_background_rounded"
                     android:gravity="center"

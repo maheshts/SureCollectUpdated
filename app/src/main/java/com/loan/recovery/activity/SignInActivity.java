@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,8 +30,12 @@ import com.loan.recovery.retrofit.model.AirtelPhone;
 import com.loan.recovery.retrofit.model.AirtelResponse;
 import com.loan.recovery.retrofit.model.Partner;
 import com.loan.recovery.retrofit.model.PartnerCallResponse;
+import com.loan.recovery.retrofit.model.ProjectConfigData;
+import com.loan.recovery.retrofit.model.ConfigResponse;
 import com.loan.recovery.retrofit.model.PaymentType;
 import com.loan.recovery.retrofit.model.PaymentTypesResponse;
+import com.loan.recovery.retrofit.model.ProjectData;
+import com.loan.recovery.retrofit.model.ProjectTypesResponse;
 import com.loan.recovery.retrofit.model.SignInResponse;
 import com.loan.recovery.retrofit.model.Status;
 import com.loan.recovery.retrofit.model.StatusCallResponse;
@@ -219,8 +222,18 @@ public class SignInActivity extends BaseActivity {
         Call<PaymentTypesResponse> call3 = apiService.getPaymentTypes();
         call3.enqueue(new PaymentTypesCallBack());
 
+
         Call<UserPhoneResponse> call5 = apiService.getPhoneNumber(userId);
         call5.enqueue(new PhoneNumberCallBack());
+
+        if(patnerid.equalsIgnoreCase("1024")) {
+            Call<ConfigResponse> call44 = apiService.getConfigData(1024);
+            call44.enqueue(new RealConfigTypesCallBack());
+
+
+            Call<ProjectTypesResponse> call45 = apiService.getProjects(1001);
+            call45.enqueue(new ProjectTypesCallBack());
+        }
 
 //        Call<AirtelResponse> call6 = apiService.getPhoneNumbersList();
 //        call6.enqueue(new AirtelPhoneNumberCallBack());
@@ -314,6 +327,58 @@ public class SignInActivity extends BaseActivity {
         @Override
         public void onFailure(Call<PaymentTypesResponse> call, Throwable t) {
             System.out.println("<=== PaymentTypesCallBack - Response : ===> " + t.getMessage());
+        }
+    }
+    class ProjectTypesCallBack implements Callback<ProjectTypesResponse> {
+        @Override
+        public void onResponse(Call<ProjectTypesResponse> call, Response<ProjectTypesResponse> response) {
+            apistatuscounter = apistatuscounter+1;
+            Log.v("apistatuscounter","Mahesh"+apistatuscounter);
+
+            System.out.println("<=== PaymentTypesCallBack - Response : ===> Count "+apistatuscounter + new Gson().toJson(response.body()));
+            ProjectTypesResponse paymentTypesResponse = response.body();
+            List<ProjectData> partners = paymentTypesResponse.getPaymentTypeList();
+            ProjectData partner = new ProjectData();
+            partner.setProjectName("Select Project Type");
+            partner.setProjectId(0000);
+            partners.add(0, partner);
+            application.setProjectTypes(partners);
+//            if(apistatuscounter == 5){
+//                setData();
+//            }
+        }
+
+        @Override
+        public void onFailure(Call<ProjectTypesResponse> call, Throwable t) {
+            System.out.println("<=== PROJECT DATA - Response : ===> " + t.getMessage());
+        }
+    }
+
+    class RealConfigTypesCallBack implements Callback<ConfigResponse> {
+        @Override
+        public void onResponse(Call<ConfigResponse> call, Response<ConfigResponse> response) {
+            apistatuscounter = apistatuscounter+1;
+            Log.v("apistatuscounter","Mahesh"+apistatuscounter);
+
+            System.out.println("<=== Config - Response111 : ===>"+new Gson().toJson(response.body()));
+            ConfigResponse paymentTypesResponse = response.body();
+            Log.v("apistatuscounter","Mahesh"+response.body());
+
+            List<ProjectConfigData> partners = paymentTypesResponse.getPaymentTypeList();
+            ProjectConfigData partner = new ProjectConfigData();
+            partner.setProjectName("Select Config Type");
+            partner.setProjectId(0000);
+            partners.add(0, partner);
+            application.setConfigTypes(partners);
+
+//            if(apistatuscounter == 5){
+//                setData();
+//            }
+        }
+
+        @Override
+        public void onFailure(Call<ConfigResponse> call, Throwable t) {
+            System.out.println("<=== PARTNER DATA - Response : ===> " + t.getMessage());
         }
     }
 
